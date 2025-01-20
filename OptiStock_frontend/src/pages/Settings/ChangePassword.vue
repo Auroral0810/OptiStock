@@ -15,11 +15,11 @@ const passwordForm = ref({
 const rules = {
   oldPassword: [
     { required: true, message: '请输入原密码', trigger: 'blur' },
-    { min: 5, max: 16, message: '密码长度为5-16位', trigger: 'blur' }
+    { min: 5, max: 16, message: '原密码长度为5-16位', trigger: 'blur' }
   ],
   newPassword: [
     { required: true, message: '请输入新密码', trigger: 'blur' },
-    { min: 5, max: 16, message: '密码长度为5-16位', trigger: 'blur' }
+    { min: 5, max: 16, message: '新密码长度为5-16位', trigger: 'blur' }
   ],
   confirmPassword: [
     { required: true, message: '请确认新密码', trigger: 'blur' },
@@ -36,27 +36,44 @@ const rules = {
   ]
 }
 import { changePassword } from '@/api/user'
-
 const handleSubmit = async () => {
-// 提示是否真的要修改密码
-ElMessageBox.confirm('确定要修改密码吗？', '提示', {
+  if (!formRef.value) return
+  
+  // 先进行表单校验
+  await formRef.value.validate(async (valid, fields) => {
+    if (valid) {
+      // 校验通过后,提示是否真的要修改密码
+      ElMessageBox.confirm('确定要修改密码吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
-    }).then(async () => {
+      }).then(async () => {
         try {
-            // 调用修改密码的接口
-            await changePassword(passwordForm.value.oldPassword, passwordForm.value.newPassword)
-            ElMessage.success('修改密码成功')
+          loading.value = true
+          // 调用修改密码的接口
+          await changePassword(passwordForm.value.oldPassword, passwordForm.value.newPassword)
+          ElMessage.success('修改密码成功')
+          // 重置表单
+          resetForm()
         } catch (error) {
-            // 处理请求失败
-            // ElMessage.error('修改密码失败，请稍后重试')
-            console.error(error)
+          // 处理请求失败
+          // ElMessage.error('修改密码失败，请稍后重试')
+          console.error(error)
+        } finally {
+          loading.value = false
         }
-    }).catch(() => {
-        // 只有用户主动点击 “取消” 才会执行这里
+      }).catch(() => {
+        // 只有用户主动点击 "取消" 才会执行这里
         ElMessage.info('用户取消修改密码')
-    })
+      })
+    } else {
+      // 只显示第一个错误信息
+      const firstField = Object.keys(fields)[0]
+      const firstError = fields[firstField][0]
+      ElMessage.error(firstError.message)
+      return false
+    }
+  })
 }
 
 const resetForm = () => {

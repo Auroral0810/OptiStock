@@ -63,9 +63,10 @@ const handleLogin = async () => {
     const res = await userLogin(form.username, form.password)
     if (res.code === 200) {
       ElMessage.success('登录成功')
+      console.log(res.data.token)
     // 存储 Token 和用户信息到 Pinia + LocalStorage
     authStore.login(res.data.token, res.data.userInfo)
-      await router.push('/homepage')
+      await router.push('/homepage/default')
     }
 }
 

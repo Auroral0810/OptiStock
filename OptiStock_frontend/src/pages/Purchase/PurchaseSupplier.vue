@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h1>入库记录</h1>
+    <h1>供应商管理</h1>
   </div>
 </template>

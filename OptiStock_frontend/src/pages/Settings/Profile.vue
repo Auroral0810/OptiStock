@@ -61,6 +61,10 @@ const handleSubmit = async () => {
             authStore.updateUserInfo(userForm.value)
 
             ElMessage.success('更新成功')
+            // 在HomePage中使用computed计算属性替代ref
+            // const avatarUrl = computed(() => authStore.userInfo.avatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png')
+            // const nickname = computed(() => authStore.userInfo.nickname || '用户昵称')
+            // 这样当authStore.userInfo更新时会自动更新头像和昵称
             isEditing.value = false
         } catch (error) {
             // 处理请求失败

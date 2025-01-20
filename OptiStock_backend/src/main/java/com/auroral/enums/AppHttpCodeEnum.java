@@ -8,6 +8,10 @@ public enum AppHttpCodeEnum {
     TOKEN_EXPIRED(400,"token无效或已过期"),
     NEED_LOGIN(401,"需要登录后操作"),
     NO_OPERATOR_AUTH(403,"无权限操作"),
+    //存在相同记录
+    DUPLICATE_RECORD(410,"存在相同记录"),
+    //参数错误
+    PARAM_ERROR(402,"参数错误"),
     //旧密码输入错误
     OLD_PASSWORD_ERROR(405,"旧密码输入错误"),
     SYSTEM_ERROR(500,"出现错误"),

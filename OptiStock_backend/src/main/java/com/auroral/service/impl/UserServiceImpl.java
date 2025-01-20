@@ -97,7 +97,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //先验证旧密码是否正确,根据id查询用户信息
         Long id = request.getId();
         User user = userMapper.selectById(id);
-        if (Objects.isNull(user) ||!Md5Util.getMD5String(request.getOldpassword()).equals(user.getPasswordHash())) {
+        if (Objects.isNull(user) ||!Md5Util.getMD5String(request.getOldPassword()).equals(user.getPasswordHash())) {
             return ResponseResult.errorResult(AppHttpCodeEnum.OLD_PASSWORD_ERROR);
         }
         //加密密码

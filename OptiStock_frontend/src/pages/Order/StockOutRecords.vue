@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h1>入库</h1>
+    <h1>出库记录</h1>
   </div>
 </template>

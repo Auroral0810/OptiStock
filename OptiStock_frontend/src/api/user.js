@@ -49,7 +49,7 @@ export function changePassword(oldPassword, newPassword) {
             'Content-Type': 'application/json',
             isToken: true
         },
-        data: { oldPassword, newPassword }
+        data: {oldPassword, newPassword}
     })
 }
 
