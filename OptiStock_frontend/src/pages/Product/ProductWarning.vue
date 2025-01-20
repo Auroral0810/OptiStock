@@ -47,7 +47,7 @@ const initTempThresholds = () => {
 
 // 更新临时阈值
 const updateTempThreshold = (id, value) => {
-  tempThresholds.value[item.id] = value
+  tempThresholds.value[id] = value
 }
 
 // 确认更新商品阈值

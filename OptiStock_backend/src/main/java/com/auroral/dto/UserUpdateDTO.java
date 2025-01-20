@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-public class UserUpdateRequest {
+public class UserUpdateDTO {
 
     @NotBlank(message = "昵称不能为空")
     @Pattern(regexp = "^\\S{2,10}$", message = "昵称长度为2-10位，不能包含空格")

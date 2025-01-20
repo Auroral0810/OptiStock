@@ -3,7 +3,7 @@ package com.auroral.dto;
 import lombok.Data;
 
 @Data
-public class UpdateCategoryRequest {
+public class UpdateCategoryDTO {
 
     private Long id;
     //分类名称

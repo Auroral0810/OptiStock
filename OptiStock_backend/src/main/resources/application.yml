@@ -7,8 +7,18 @@ spring:
     url: jdbc:mysql://localhost:3306/OptiStock?useSSL=false&serverTimezone=UTC
     username: root
     password: YYF101611
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 60000
+      connection-timeout: 30000
+  transaction:
+    rollback-on-commit-failure: true
+
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 打印SQL日志
+

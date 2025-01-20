@@ -1,13 +1,15 @@
 import request from '@/utils/request'
 
 //获取全部的商品分类信息post方法，传入的是页数和每页数量
-export function getAllProductCategory(pageNum, pageSize) {
+export function getAllProductCategory(pageNum, pageSize,categoryName,parentId) {
     return request({
         url: '/product/getAllProductCategory',
         method: 'post',
         data: {
             pageNum: pageNum,
-            pageSize: pageSize
+            pageSize: pageSize,
+            categoryName: categoryName,
+            parentId: parentId
         }
     })
 }
@@ -48,6 +50,53 @@ export function updateCategoryInfo(id,name,parentId) {
 export function deleteProductCategory(id) {
     return request({
         url: `/product/deleteCategory?id=${id}`,
+        method: 'delete'
+    })
+}
+//获取Sku列表和商品分类列表
+export function getSkuListAndCategoryList() {
+    return request({
+        url: '/product/getSkuAndCategoryList',
+        method: 'get'
+    })
+}
+// 获取商品列表
+export function getProductList(pageNum, pageSize, filterForm) {
+    console.log('请求参数:', {
+        pageNum: pageNum,
+        pageSize: pageSize,
+        filterForm: filterForm
+    });
+    return request({
+        url: '/product/getProductList',
+        method: 'post',
+        data: {
+            pageNum: pageNum,
+            pageSize: pageSize,
+            filterForm: filterForm
+        }
+    })
+}
+// 添加商品
+export function addProduct(product) {
+    return request({
+        url: '/product/addProduct',
+        method: 'post',
+        data: product
+    })
+}
+// 更新商品
+export function updateProduct(product) {
+    return request({
+        url: `/product/updateProduct`,
+        method: 'patch',
+        data: product
+    })
+}
+// 删除商品
+export function deleteProduct(id) {
+    return request({
+        url: `/product/deleteProduct?id=${id}`,
         method: 'delete'
     })
 }

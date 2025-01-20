@@ -36,19 +36,15 @@ const rules = reactive({
 
 // 搜索功能
 const handleSearch = () => {
-  console.log('搜索分类:', filterForm)
-  //数据已经存储在了store中，因此不需要调用后端，直接搜索就行，同时需要支持模糊搜索.注意上级分类名称可能为空
-  const res = productCategoryStore.parentCategoryList.filter(item => item.name.includes(filterForm.name) 
-  && (item.parentName == filterForm.parentName || filterForm.parentName == ''))
-  console.log(res)
-  //绑定数据
-  categoryData.value = res
+  // 调用方法
+ProductCategoryList()
 }
 
 // 重置筛选
 const resetFilter = () => {
   filterForm.name = ''
   filterForm.parentName = ''
+  ProductCategoryList()
 }
 // 分类数据
 const categoryData = ref([])
@@ -70,7 +66,10 @@ const handlePageChange = (val) => {
 import { getAllProductCategory, getParentCategoryList } from '@/api/product'
 //获取全部的商品分类信息
 const ProductCategoryList = async () => {
-  const res = await getAllProductCategory(currentPage.value, pageSize.value)
+  //在parentCategoryDate中查找分类条件对应的id
+  const parentId = parentCategoryDate.value.find(item => item.name == filterForm.parentName)?parentCategoryDate.value.find(item => item.name == filterForm.parentName).id:''
+  //每次获取都加入所有的搜索条件
+  const res = await getAllProductCategory(currentPage.value, pageSize.value,filterForm.name,parentId)
   console.log(res)
   //绑定数据
   categoryData.value = res.data.rows
@@ -235,7 +234,7 @@ const handleDelete = (row) => {
           <el-upload action="/api/upload" :show-file-list="false" accept=".csv, .xlsx" @success="handleImportSuccess">
             <!-- <el-button type="info" :icon="Upload">导入分类</el-button> -->
           </el-upload>
-          <el-button type="primary" :icon="Download" @click="exportData">导出分类</el-button>
+          <el-button type="primary" :icon="Download" @click="exportData">导出当前页</el-button>
           <el-button type="primary" :icon="Plus" @click="openDialog();title='添加分类'">添加分类</el-button>
         </div>
       </div>

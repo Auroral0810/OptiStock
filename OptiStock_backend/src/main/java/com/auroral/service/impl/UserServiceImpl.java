@@ -1,8 +1,8 @@
 package com.auroral.service.impl;
 
-import com.auroral.dto.UserChangePwdRequest;
-import com.auroral.dto.UserLoginRequest;
-import com.auroral.dto.UserUpdateRequest;
+import com.auroral.dto.UserChangePwdDTO;
+import com.auroral.dto.UserLoginDTO;
+import com.auroral.dto.UserUpdateDTO;
 import com.auroral.entity.ResponseResult;
 import com.auroral.entity.User;
 import com.auroral.utils.RedisCache;
@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Objects;
 
 
@@ -57,7 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public ResponseResult login(UserLoginRequest request) {
+    public ResponseResult login(UserLoginDTO request) {
 
         String username = request.getUsername();
         String password = request.getPassword();
@@ -83,7 +83,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public ResponseResult updateInfo(UserUpdateRequest request) {
+    public ResponseResult updateInfo(UserUpdateDTO request) {
         //已经通过了controller层的登录验证，所以这里不需要再验证token了
         User user = BeanCopyUtils.copyBean(request, User.class);
         //更新用户信息
@@ -92,7 +92,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public ResponseResult changePassword(UserChangePwdRequest request) {
+    public ResponseResult changePassword(UserChangePwdDTO request) {
         //已经通过了controller层的登录验证，所以这里不需要再验证token了
         //先验证旧密码是否正确,根据id查询用户信息
         Long id = request.getId();

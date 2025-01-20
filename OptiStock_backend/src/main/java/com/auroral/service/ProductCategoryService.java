@@ -1,7 +1,8 @@
 package com.auroral.service;
 
-import com.auroral.dto.AddCategoryRequest;
-import com.auroral.dto.UpdateCategoryRequest;
+import com.auroral.dto.AddCategoryDTO;
+import com.auroral.dto.PageRequestDTO;
+import com.auroral.dto.UpdateCategoryDTO;
 import com.auroral.entity.ProductCategory;
 import com.auroral.entity.ResponseResult;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -14,14 +15,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-01-20 12:00:38
  */
 public interface ProductCategoryService extends IService<ProductCategory> {
-    ResponseResult getAllProductCategory(Integer pageNum, Integer sizeSize);
+    ResponseResult getAllProductCategory(PageRequestDTO pageRequestDTO);
 
     ResponseResult getParentCategoty();
 
-    ResponseResult addCategory(AddCategoryRequest addCategoryRequest);
+    ResponseResult addCategory(AddCategoryDTO addCategoryDTO);
 
     ResponseResult deleteCategory(Long id);
 
-    ResponseResult updateCategory(UpdateCategoryRequest updateCategoryRequest);
+    ResponseResult updateCategory(UpdateCategoryDTO updateCategoryDTO);
+
 }
 

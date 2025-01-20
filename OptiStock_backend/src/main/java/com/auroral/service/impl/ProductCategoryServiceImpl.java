@@ -1,7 +1,8 @@
 package com.auroral.service.impl;
 
-import com.auroral.dto.AddCategoryRequest;
-import com.auroral.dto.UpdateCategoryRequest;
+import com.auroral.dto.AddCategoryDTO;
+import com.auroral.dto.PageRequestDTO;
+import com.auroral.dto.UpdateCategoryDTO;
 import com.auroral.entity.ProductCategory;
 import com.auroral.entity.ResponseResult;
 import com.auroral.enums.AppHttpCodeEnum;
@@ -34,15 +35,29 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
     private ProductMapper productMapper;
     @Autowired
     private ProductCategoryMapper productCategoryMapper;
+
     @Override
-    public ResponseResult getAllProductCategory(Integer pageNum, Integer pageSize) {
+    public ResponseResult getAllProductCategory(PageRequestDTO pageRequestDTO) {
+        // 获取参数
+        Integer pageNum = pageRequestDTO.getPageNum();
+        Integer pageSize = pageRequestDTO.getPageSize();
+        String categoryName = pageRequestDTO.getCategoryName();
+        Long parentId = pageRequestDTO.getParentId();
         // 构造分页条件，第几页，每页多少条数据
         Page<ProductCategory> page = new Page<>(pageNum, pageSize);
 
         // 查询条件构造器
         LambdaQueryWrapper<ProductCategory> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(ProductCategory::getId);//根据id升序排列
+// 只有在 categoryName 不为空时加入条件
+        if (categoryName != null && !categoryName.trim().isEmpty()) {
+            queryWrapper.like(ProductCategory::getName, categoryName.trim());
+        }
 
+// 只有在 parentId 不为空时加入条件
+        if (parentId != null) {
+            queryWrapper.eq(ProductCategory::getParentId, parentId);
+        }
         // 执行分页查询
         page(page, queryWrapper);
         System.out.println("总条数：" + page.getTotal());
@@ -88,17 +103,17 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
     //新增商品分类
 
     @Override
-    public ResponseResult addCategory(AddCategoryRequest addCategoryRequest) {
+    public ResponseResult addCategory(AddCategoryDTO addCategoryDTO) {
         //判断分类是否存在
         LambdaQueryWrapper<ProductCategory> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ProductCategory::getName, addCategoryRequest.getName());
+        queryWrapper.eq(ProductCategory::getName, addCategoryDTO.getName());
 //        queryWrapper.eq(ProductCategory::getParentId, addCategoryRequest.getParentId());
         ProductCategory category = getOne(queryWrapper);
         if (category != null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.DUPLICATE_RECORD);
         }
         //转换成实体类
-        ProductCategory productCategory = BeanCopyUtils.copyBean(addCategoryRequest, ProductCategory.class);
+        ProductCategory productCategory = BeanCopyUtils.copyBean(addCategoryDTO, ProductCategory.class);
         //保存到数据库
         save(productCategory);
         return ResponseResult.okResult();
@@ -127,22 +142,24 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
 
     //更新商品分类
     @Override
-    public ResponseResult updateCategory(UpdateCategoryRequest updateCategoryRequest) {
+    public ResponseResult updateCategory(UpdateCategoryDTO updateCategoryDTO) {
         //判断分类是否存在
         LambdaQueryWrapper<ProductCategory> queryWrapper = new LambdaQueryWrapper<>();
         //判断数据库中是否存在id和要修改的记录不相同但是名称相同的记录
-        queryWrapper.ne(ProductCategory::getId, updateCategoryRequest.getId());
-        queryWrapper.eq(ProductCategory::getName, updateCategoryRequest.getName());
+        queryWrapper.ne(ProductCategory::getId, updateCategoryDTO.getId());
+        queryWrapper.eq(ProductCategory::getName, updateCategoryDTO.getName());
 //        queryWrapper.eq(ProductCategory::getParentId, addCategoryRequest.getParentId());
         ProductCategory category = getOne(queryWrapper);
         if (category != null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.DUPLICATE_RECORD);
         }
         //调用重写的update方法更新
-        productCategoryMapper.updateCategoryNameAndParentId(updateCategoryRequest.getId(), updateCategoryRequest.
-                getName(), updateCategoryRequest.getParentId());
+        productCategoryMapper.updateCategoryNameAndParentId(updateCategoryDTO.getId(), updateCategoryDTO.
+                getName(), updateCategoryDTO.getParentId());
         return ResponseResult.okResult();
     }
+
+
 }
 
 

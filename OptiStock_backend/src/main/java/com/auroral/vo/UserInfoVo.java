@@ -15,7 +15,6 @@ import java.util.Date;
  * @author makejava
  * @since 2025-01-19 13:58:19
  */
-@SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

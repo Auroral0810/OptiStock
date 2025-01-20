@@ -1,13 +1,11 @@
 package com.auroral.service;
 
-import com.auroral.dto.UserChangePwdRequest;
-import com.auroral.dto.UserLoginRequest;
-import com.auroral.dto.UserUpdateRequest;
+import com.auroral.dto.UserChangePwdDTO;
+import com.auroral.dto.UserLoginDTO;
+import com.auroral.dto.UserUpdateDTO;
 import com.auroral.entity.ResponseResult;
 import com.auroral.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 
 
 /**
@@ -20,10 +18,10 @@ public interface UserService extends IService<User> {
 
     ResponseResult register(String username, String nickname, String password);
 
-    ResponseResult login(UserLoginRequest request);
+    ResponseResult login(UserLoginDTO request);
 
-    ResponseResult updateInfo(UserUpdateRequest request);
+    ResponseResult updateInfo(UserUpdateDTO request);
 
-    ResponseResult changePassword( UserChangePwdRequest request);
+    ResponseResult changePassword( UserChangePwdDTO request);
 }
 
