@@ -1,9 +1,6 @@
 package com.auroral.service.impl;
 
-import com.auroral.dto.AddProductDTO;
-import com.auroral.dto.ProductFilterDTO;
-import com.auroral.dto.ProductListDTO;
-import com.auroral.dto.UpdateProductDTO;
+import com.auroral.dto.*;
 import com.auroral.entity.Product;
 import com.auroral.entity.ProductCategory;
 import com.auroral.entity.ResponseResult;
@@ -14,6 +11,7 @@ import com.auroral.utils.BeanCopyUtils;
 import com.auroral.vo.PageVo;
 import com.auroral.vo.ProductVo;
 import com.auroral.vo.SkuAndCategoryVo;
+import com.auroral.vo.StockVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -33,6 +31,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
     @Autowired
     private ProductCategoryServiceImpl productCategoryService;
+
     //返回商品SKU和分类列表
     @Override
     public ResponseResult getSkuAndCategoryList() {
@@ -68,6 +67,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
          */
         return ResponseResult.okResult(skuAndCategoryVo);
     }
+
     //返回商品信息
     @Override
     public ResponseResult getProductList(ProductListDTO requestDTO) {
@@ -85,9 +85,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
         //todo 后续直接在SkuAndCategoryVo中返回分类id，前端直接使用，从而简化查询ID
         if (filter.getCategoryName() != null && !filter.getCategoryName().trim().isEmpty()) {
-           // 先查询分类ID
+            // 先查询分类ID
             ProductCategory category = productCategoryService.getOne(new LambdaQueryWrapper<ProductCategory>()
-                   .eq(ProductCategory::getName, filter.getCategoryName().trim()));
+                    .eq(ProductCategory::getName, filter.getCategoryName().trim()));
             if (category != null) {
                 queryWrapper.eq(Product::getCategoryId, category.getId());
             }
@@ -120,6 +120,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         PageVo pageVo = new PageVo(productVoList, page.getTotal());
         return ResponseResult.okResult(pageVo);
     }
+
     //添加商品信息
     @Override
     public ResponseResult addProduct(AddProductDTO addProductDTO) {
@@ -130,31 +131,32 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
          * 4.返回成功信息
          * */
         Product product = getOne(new LambdaQueryWrapper<Product>()
-               .eq(Product::getName, addProductDTO.getName()));
+                .eq(Product::getName, addProductDTO.getName()));
         if (product != null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_ERROR);
         }
         Product newProduct = BeanCopyUtils.copyBean(addProductDTO, Product.class);
         //查找分类ID
         ProductCategory category = productCategoryService.getOne(new LambdaQueryWrapper<ProductCategory>()
-               .eq(ProductCategory::getName, addProductDTO.getCategoryName().trim()));
+                .eq(ProductCategory::getName, addProductDTO.getCategoryName().trim()));
         if (category != null) {
             newProduct.setCategoryId(category.getId());
-            }
+        }
         save(newProduct);
         return ResponseResult.okResult();
     }
+
     //删除商品信息
     @Override
     public ResponseResult deleteProduct(Long id) {
         /*1，判断商品的库存是否为0
-        * 2.如果库存为0，则删除商品信息
-        * 3.如果库存不为0，则返回错误信息
-        * */
+         * 2.如果库存为0，则删除商品信息
+         * 3.如果库存不为0，则返回错误信息
+         * */
         Product product = getById(id);
         if (product == null) {   //商品不存在
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_ERROR);
-             }
+        }
         if (product.getStockQuantity() == 0) {
             removeById(id);
             return ResponseResult.okResult();
@@ -162,16 +164,55 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             return ResponseResult.errorResult(AppHttpCodeEnum.REQUEST_NOT_MATCH);
         }
     }
-    //修改商品信息
 
+    //修改商品信息
     @Override
     public ResponseResult updateProduct(UpdateProductDTO updateProductDTO) {
-        /*1.
-
-        * */
         Product product = BeanCopyUtils.copyBean(updateProductDTO, Product.class);
         updateById(product);
         return ResponseResult.okResult();
+    }
+
+    //获取库存记录
+
+    @Override
+    public ResponseResult getStockList(StockListDTO stockListDTO) {
+        /*1.根据条件查询商品信息
+        * 2.封装Vo对象
+        * 3.计算总价值
+        * 4.返回结果
+        * */
+        //先获取查询条件
+        Integer pageNum = stockListDTO.getPageNum() != null ? stockListDTO.getPageNum() : 1;
+        Integer pageSize = stockListDTO.getPageSize() != null ? stockListDTO.getPageSize() : 10;
+        String name = stockListDTO.getFilterForm().getName();
+        String sku = stockListDTO.getFilterForm().getSku();
+        Page<Product> page = new Page<>(pageNum, pageSize);
+        //构建查询条件
+        LambdaQueryWrapper<Product> queryWrapper = new LambdaQueryWrapper<>();
+        if (name != null && !name.trim().isEmpty()) {
+            queryWrapper.like(Product::getName, name.trim());
+        }
+        if (sku != null && !sku.trim().isEmpty()) {
+            queryWrapper.like(Product::getSku, sku.trim());
+        }
+        queryWrapper.orderByDesc(Product::getId);
+        //执行查询
+        page(page, queryWrapper);
+        //获取数据
+        List<Product> productList = page.getRecords();
+        //封装VO
+        List<StockVo> stockVoList = BeanCopyUtils.copyBeanList(productList, StockVo.class);
+        //计算总价值
+        stockVoList.stream()
+                .map(product -> {
+                     product.setTotalValue(product.getPrice() * product.getStockQuantity());
+                     return product;
+                 })
+                .collect(Collectors.toList());
+        //返回结果
+        PageVo pageVo = new PageVo(stockVoList, page.getTotal());
+        return ResponseResult.okResult(pageVo);
     }
 }
 

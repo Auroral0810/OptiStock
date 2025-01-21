@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { HomeFilled, Goods, Box, SoldOut, DataAnalysis, User as UserIcon, Setting, SwitchButton } from '@element-plus/icons-vue'
+import { HomeFilled, Goods, Box, SoldOut, DataAnalysis, User as UserIcon, Setting, SwitchButton, Key, InfoFilled, ArrowDown } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/utils/auth'
 
@@ -69,7 +69,7 @@ const menuItems = [
       children: [
         { index: '6-1', title: '修改个人信息', path: '/settings/profile' },
         { index: '6-2', title: '修改密码', path: '/settings/password' },
-        { index: '6-3', title: '系统配置', path: '/settings/config' },
+        { index: '6-3', title: '关于我们', path: '/settings/config' },
         { index: '6-4', title: '退出登录', path: '/settings/logout' }
       ]
     }
@@ -126,6 +126,18 @@ const handleMenuSelect = (index) => {
     }
   }
 }
+
+// 处理头像下拉菜单点击
+const handleDropdownClick = (path) => {
+  if(path === '/settings/profile') {
+    breadcrumb.value = ['系统管理', '修改个人信息']
+  } else if(path === '/settings/password') {
+    breadcrumb.value = ['系统管理', '修改密码'] 
+  } else if(path === '/settings/config') {
+    breadcrumb.value = ['系统管理', '关于我们']
+  }
+  router.push(path)
+}
 </script>
 
 <template>
@@ -147,9 +159,17 @@ const handleMenuSelect = (index) => {
           </div>
           <template #dropdown>
             <el-dropdown-menu class="user-dropdown">
-              <el-dropdown-item>
+              <el-dropdown-item @click="handleDropdownClick('/settings/profile')">
                 <el-icon><UserIcon /></el-icon>
-                个人中心
+                修改个人信息
+              </el-dropdown-item>
+              <el-dropdown-item @click="handleDropdownClick('/settings/password')">
+                <el-icon><Key /></el-icon>
+                修改密码
+              </el-dropdown-item>
+              <el-dropdown-item @click="handleDropdownClick('/settings/config')">
+                <el-icon><InfoFilled /></el-icon>
+                关于我们
               </el-dropdown-item>
               <el-dropdown-item divided @click="handleLogout">
                 <el-icon><SwitchButton /></el-icon>

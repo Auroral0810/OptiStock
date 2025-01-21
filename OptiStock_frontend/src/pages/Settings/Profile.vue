@@ -42,78 +42,73 @@ const handleCancel = () => {
 import { userUpdateInfo } from '@/api/user'
 
 const handleSubmit = async () => {
-    // 提示是否真的要更新
     ElMessageBox.confirm('确定要更新吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
     }).then(async () => {
         try {
-            // 创建一个副本，并去掉 `username`
             const updatedUserInfo = { ...userForm.value }
-            delete updatedUserInfo.username  // 删除 username
+            delete updatedUserInfo.username
 
-            // 调用更新信息的接口
-            console.log(updatedUserInfo)  // 确保 `username` 不在这里
             await userUpdateInfo(updatedUserInfo)
-
-            // 更新 Pinia 中的用户信息
             authStore.updateUserInfo(userForm.value)
 
             ElMessage.success('更新成功')
-            // 在HomePage中使用computed计算属性替代ref
-            // const avatarUrl = computed(() => authStore.userInfo.avatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png')
-            // const nickname = computed(() => authStore.userInfo.nickname || '用户昵称')
-            // 这样当authStore.userInfo更新时会自动更新头像和昵称
             isEditing.value = false
         } catch (error) {
-            // 处理请求失败
-            // ElMessage.error('更新失败，请稍后重试')
             console.error(error)
         }
     }).catch(() => {
-        // 只有用户主动点击 “取消” 才会执行这里
         ElMessage.info('用户取消更新')
     })
 }
-//图片上传成功的回调函数
+
 const handleAvatarSuccess = (result)=>{
     userForm.value.avatar = result.data
-    // console.log(userForm.value.avatar)
 }
 </script>
 
 <template>
   <div class="profile-container">
-    <div class="profile-card">
+    <div class="ripple-background">
+      <div class="circle xxlarge shade1"></div>
+      <div class="circle xlarge shade2"></div>
+      <div class="circle large shade3"></div>
+      <div class="circle medium shade4"></div>
+      <div class="circle small shade5"></div>
+    </div>
+    <div class="profile-card animate__animated animate__fadeIn">
       <div class="header">
-        <h1>个人资料</h1>
+        <div class="title-section">
+          <h1 class="gradient-title">个人资料</h1>
+          <p class="subtitle">完善您的个人信息，让我们更好地为您服务</p>
+        </div>
         <div>
-          <el-button v-if="!isEditing" type="primary" @click="handleEdit" :icon="Edit">编辑资料</el-button>
+          <el-button v-if="!isEditing" type="primary" @click="handleEdit" :icon="Edit" size="large" class="edit-btn">编辑资料</el-button>
           <div v-else class="btn-group">
-            <el-button type="success" @click="handleSubmit" :icon="Check">保存</el-button>
-            <el-button type="info" @click="handleCancel" :icon="Close">取消</el-button>
+            <el-button type="success" @click="handleSubmit" :icon="Check" size="large" class="action-btn">保存</el-button>
+            <el-button type="info" @click="handleCancel" :icon="Close" size="large" class="action-btn">取消</el-button>
           </div>
         </div>
       </div>
 
       <div class="profile-content">
-        <!-- 头像区域 -->
         <div class="avatar-section">
           <div class="avatar-wrapper">
-            <el-avatar :size="120" :src="userForm.avatar" />
+            <el-avatar :size="270" :src="userForm.avatar" class="user-avatar" />
             <div v-if="isEditing" class="avatar-overlay">
               <el-upload
-              ref="uploadRef"
-              class="avatar-uploader" 
-              :show-file-list="false"
-              :auto-upload="true"
-              action="/api/upload"
-              name="file"
-              :headers="{'Authorization': authStore.token}"
-              :on-success="handleAvatarSuccess"
->
-                <el-icon size="24"><Camera /></el-icon>
+                ref="uploadRef"
+                class="avatar-uploader" 
+                :show-file-list="false"
+                :auto-upload="true"
+                action="/api/upload"
+                name="file"
+                :headers="{'Authorization': authStore.token}"
+                :on-success="handleAvatarSuccess"
+              >
+                <el-icon size="40"><Camera /></el-icon>
                 <span>更换头像</span>
               </el-upload>
             </div>
@@ -121,40 +116,39 @@ const handleAvatarSuccess = (result)=>{
           <div class="user-name">{{ userForm.nickname || userForm.username }}</div>
         </div>
 
-        <!-- 个人信息表单 -->
         <el-form 
           ref="formRef"
           :model="userForm" 
           :rules="rules"
-          label-width="90px" 
+          label-width="140px" 
           class="profile-form"
           :disabled="!isEditing">
-          <el-form-item label="用户名">
-            <el-input v-model="userForm.username" disabled>
+          <el-form-item label="用户名" size="large">
+            <el-input v-model="userForm.username" disabled class="custom-input">
               <template #prefix>
                 <el-icon><User /></el-icon>
               </template>
             </el-input>
           </el-form-item>
 
-          <el-form-item label="昵称" prop="nickname">
-            <el-input v-model="userForm.nickname" placeholder="请输入昵称">
+          <el-form-item label="昵称" prop="nickname" size="large">
+            <el-input v-model="userForm.nickname" placeholder="请输入昵称" class="custom-input">
               <template #prefix>
                 <el-icon><UserFilled /></el-icon>
               </template>
             </el-input>
           </el-form-item>
 
-          <el-form-item label="邮箱" prop="email">
-            <el-input v-model="userForm.email" placeholder="请输入邮箱">
+          <el-form-item label="邮箱" prop="email" size="large">
+            <el-input v-model="userForm.email" placeholder="请输入邮箱" class="custom-input">
               <template #prefix>
                 <el-icon><Message /></el-icon>
               </template>
             </el-input>
           </el-form-item>
 
-          <el-form-item label="手机号" prop="phone">
-            <el-input v-model="userForm.phone" placeholder="请输入手机号">
+          <el-form-item label="手机号" prop="phone" size="large">
+            <el-input v-model="userForm.phone" placeholder="请输入手机号" class="custom-input">
               <template #prefix>
                 <el-icon><Phone /></el-icon>
               </template>
@@ -167,29 +161,94 @@ const handleAvatarSuccess = (result)=>{
 </template>
 
 <style scoped>
-/* 页面容器 */
 .profile-container {
+  height: calc(100vh - 60px);
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 90vh;
+  background: #f0f2f5;
   padding: 20px;
-  background: linear-gradient(135deg, #f6f8fb 0%, #f0f4f8 100%);
+  position: relative;
+  overflow: hidden;
 }
 
-/* 卡片样式 */
+.ripple-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: ripple 15s infinite;
+  box-shadow: 0 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.small {
+  width: 200px;
+  height: 200px;
+  left: -100px;
+  bottom: -100px;
+}
+
+.medium {
+  width: 400px;
+  height: 400px;
+  left: -200px;
+  bottom: -200px;
+}
+
+.large {
+  width: 600px;
+  height: 600px;
+  left: -300px;
+  bottom: -300px;
+}
+
+.xlarge {
+  width: 800px;
+  height: 800px;
+  left: -400px;
+  bottom: -400px;
+}
+
+.xxlarge {
+  width: 1000px;
+  height: 1000px;
+  left: -500px;
+  bottom: -500px;
+}
+
+.shade1 { opacity: 0.2; }
+.shade2 { opacity: 0.5; }
+.shade3 { opacity: 0.7; }
+.shade4 { opacity: 0.8; }
+.shade5 { opacity: 0.9; }
+
+@keyframes ripple {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(0.8); }
+}
+
 .profile-card {
   width: 90%;
-  max-width: 700px;
+  max-width: 800px;
+  height: 90%;
+  max-height: 800px;
   background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 40px;
   backdrop-filter: blur(10px);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
 
-/* 头部样式 */
 .header {
   display: flex;
   justify-content: space-between;
@@ -199,15 +258,20 @@ const handleAvatarSuccess = (result)=>{
   border-bottom: 2px solid #f0f2f5;
 }
 
-.header h1 {
-  font-size: 24px;
-  color: #1a1f36;
+.gradient-title {
   margin: 0;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-size: 32px;
+  background: linear-gradient(45deg, #409EFF, #36D1DC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* 头像区域 */
+.subtitle {
+  margin: 8px 0 0;
+  color: #909399;
+  font-size: 16px;
+}
+
 .avatar-section {
   display: flex;
   flex-direction: column;
@@ -217,7 +281,13 @@ const handleAvatarSuccess = (result)=>{
 
 .avatar-wrapper {
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.user-avatar {
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .avatar-overlay {
@@ -226,7 +296,7 @@ const handleAvatarSuccess = (result)=>{
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -242,89 +312,83 @@ const handleAvatarSuccess = (result)=>{
   opacity: 1;
 }
 
-.avatar-overlay span {
-  margin-top: 8px;
-  font-size: 14px;
-}
-
 .user-name {
-  font-size: 18px;
-  font-weight: 500;
-  color: #1a1f36;
+  font-size: 32px;
+  font-weight: 600;
+  color: #2c3e50;
   margin-top: 12px;
 }
 
-/* 表单样式 */
 .profile-form {
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
-.el-form-item {
-  margin-bottom: 24px;
+.custom-input {
+  :deep(.el-input__wrapper) {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: none;
+    border: 1px solid #e4e7ed;
+    transition: all 0.3s;
+    height: 56px;
+    font-size: 22px;
+  }
+
+  :deep(.el-input__wrapper:hover) {
+    border-color: #409EFF;
+  }
+
+  :deep(.el-input__wrapper.is-focus) {
+    border-color: #409EFF;
+    box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+  }
 }
 
-:deep(.el-input__wrapper) {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+.edit-btn,
+.action-btn {
+  padding: 14px 36px;
+  font-size: 18px;
+  font-weight: 500;
   border-radius: 8px;
-  padding: 8px 12px;
   transition: all 0.3s;
 }
 
-:deep(.el-input__wrapper:hover) {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.edit-btn:hover,
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-:deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #409eff;
-}
-
-:deep(.el-input__prefix) {
-  margin-right: 8px;
-}
-
-/* 按钮样式 */
 .btn-group {
   display: flex;
   gap: 12px;
 }
 
-:deep(.el-button) {
-  padding: 10px 24px;
-  border-radius: 8px;
+:deep(.el-form-item__label) {
+  font-size: 18px;
   font-weight: 500;
-  transition: all 0.3s;
 }
 
-:deep(.el-button:hover) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-:deep(.el-button .el-icon) {
-  margin-right: 6px;
-}
-
-/* 响应式调整 */
 @media screen and (max-width: 768px) {
   .profile-card {
     width: 95%;
     padding: 20px;
   }
 
-  .header h1 {
-    font-size: 20px;
+  .gradient-title {
+    font-size: 24px;
   }
 
-  :deep(.el-form-item__label) {
-    float: none;
-    display: block;
-    text-align: left;
-    margin-bottom: 8px;
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
   }
 
-  .el-form-item {
-    margin-bottom: 20px;
+  .btn-group {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 </style>

@@ -8,7 +8,7 @@ const formRef = ref(null)
 
 const passwordForm = ref({
   oldPassword: '',
-  newPassword: '',
+  newPassword: '', 
   confirmPassword: ''
 })
 
@@ -39,10 +39,8 @@ import { changePassword } from '@/api/user'
 const handleSubmit = async () => {
   if (!formRef.value) return
   
-  // 先进行表单校验
   await formRef.value.validate(async (valid, fields) => {
     if (valid) {
-      // 校验通过后,提示是否真的要修改密码
       ElMessageBox.confirm('确定要修改密码吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -50,24 +48,18 @@ const handleSubmit = async () => {
       }).then(async () => {
         try {
           loading.value = true
-          // 调用修改密码的接口
           await changePassword(passwordForm.value.oldPassword, passwordForm.value.newPassword)
           ElMessage.success('修改密码成功')
-          // 重置表单
           resetForm()
         } catch (error) {
-          // 处理请求失败
-          // ElMessage.error('修改密码失败，请稍后重试')
           console.error(error)
         } finally {
           loading.value = false
         }
       }).catch(() => {
-        // 只有用户主动点击 "取消" 才会执行这里
         ElMessage.info('用户取消修改密码')
       })
     } else {
-      // 只显示第一个错误信息
       const firstField = Object.keys(fields)[0]
       const firstError = fields[firstField][0]
       ElMessage.error(firstError.message)
@@ -84,14 +76,21 @@ const resetForm = () => {
 
 <template>
   <div class="change-password-container">
-    <div class="change-password-card">
+    <div class="ripple-background">
+      <div class="circle xxlarge shade1"></div>
+      <div class="circle xlarge shade2"></div>
+      <div class="circle large shade3"></div>
+      <div class="circle medium shade4"></div>
+      <div class="circle small shade5"></div>
+    </div>
+    <div class="change-password-card animate__animated animate__fadeIn">
       <div class="header">
         <div class="title-section">
-          <h1>修改密码</h1>
+          <h1 class="gradient-title">修改密码</h1>
           <p class="subtitle">为了保护您的账户安全，请定期更换密码</p>
         </div>
         <div class="security-icon">
-          <el-icon :size="24" color="#409EFF"><Lock /></el-icon>
+          <el-icon :size="32" color="#3B82F6"><Lock /></el-icon>
         </div>
       </div>
 
@@ -99,17 +98,19 @@ const resetForm = () => {
         ref="formRef"
         :model="passwordForm"
         :rules="rules"
-        label-position="left"
+        label-position="right"
         label-width="100px"
         class="password-form">
         
-        <el-form-item label="当前密码" prop="oldPassword">
+        <el-form-item label="原密码" prop="oldPassword">
           <el-input
             v-model="passwordForm.oldPassword"
             type="password"
-            placeholder="请输入当前密码"
+            placeholder="请输入原密码"
             show-password
-            :prefix-icon="Lock">
+            :prefix-icon="Lock"
+            size="large"
+            class="custom-input">
           </el-input>
         </el-form-item>
 
@@ -119,26 +120,37 @@ const resetForm = () => {
             type="password"
             placeholder="请输入新密码"
             show-password
-            :prefix-icon="Key">
+            :prefix-icon="Key"
+            size="large"
+            class="custom-input">
           </el-input>
         </el-form-item>
 
-        <el-form-item label="确认新密码" prop="confirmPassword">
+        <el-form-item label="确认密码" prop="confirmPassword">
           <el-input
             v-model="passwordForm.confirmPassword"
             type="password"
             placeholder="请再次输入新密码"
             show-password
-            :prefix-icon="Check">
+            :prefix-icon="Check"
+            size="large"
+            class="custom-input">
           </el-input>
         </el-form-item>
 
         <div class="form-actions">
-          <el-button @click="resetForm" plain>重置</el-button>
+          <el-button 
+            @click="resetForm" 
+            plain 
+            size="large"
+            class="reset-btn">
+            重置
+          </el-button>
           <el-button 
             type="primary" 
             @click="handleSubmit" 
             :loading="loading"
+            size="large"
             class="submit-btn">
             确认修改
           </el-button>
@@ -150,9 +162,93 @@ const resetForm = () => {
 
 <style scoped>
 .change-password-container {
+  height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0f2f5;
   padding: 20px;
-  background: linear-gradient(135deg, #f6f8fb 0%, #f0f4f8 100%);
-  min-height: calc(100vh - 60px);
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: ripple 15s infinite;
+  box-shadow: 0 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.small {
+  width: 200px;
+  height: 200px;
+  left: -100px;
+  bottom: -100px;
+}
+
+.medium {
+  width: 400px;
+  height: 400px;
+  left: -200px;
+  bottom: -200px;
+}
+
+.large {
+  width: 600px;
+  height: 600px;
+  left: -300px;
+  bottom: -300px;
+}
+
+.xlarge {
+  width: 800px;
+  height: 800px;
+  left: -400px;
+  bottom: -400px;
+}
+
+.xxlarge {
+  width: 1000px;
+  height: 1000px;
+  left: -500px;
+  bottom: -500px;
+}
+
+.shade1 {
+  opacity: 0.2;
+}
+.shade2 {
+  opacity: 0.15;
+}
+.shade3 {
+  opacity: 0.1;
+}
+.shade4 {
+  opacity: 0.05;
+}
+.shade5 {
+  opacity: 0.02;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(0.8);
+  }
 }
 
 .change-password-card {
@@ -160,124 +256,88 @@ const resetForm = () => {
   max-width: 600px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  margin-left: 24px;
+  padding: 40px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 32px;
 }
 
-.title-section h1 {
-  font-size: 20px;
-  color: #1a1f36;
-  margin: 0 0 4px 0;
-  font-weight: 600;
+.gradient-title {
+  font-size: 28px;
+  background: linear-gradient(45deg, #409EFF, #36D1DC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 8px 0;
 }
 
 .subtitle {
-  color: #64748b;
-  font-size: 13px;
+  color: #909399;
+  font-size: 14px;
   margin: 0;
 }
 
 .security-icon {
-  background: rgba(64, 158, 255, 0.1);
-  padding: 12px;
+  background: #ecf5ff;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.custom-input {
+  width: 100%;
+}
+
+.custom-input :deep(.el-input__wrapper) {
+  background: #f8f9fa;
   border-radius: 8px;
-}
-
-.password-form {
-  margin-top: 16px;
-}
-
-:deep(.el-form-item) {
-  margin-bottom: 20px;
-}
-
-:deep(.el-form-item__label) {
-  font-size: 14px;
-  color: #1a1f36;
-  font-weight: 500;
-  padding-right: 12px;
-}
-
-:deep(.el-input__wrapper) {
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   padding: 4px 12px;
 }
 
-:deep(.el-input__wrapper:hover) {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-:deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #409eff;
+.custom-input :deep(.el-input__wrapper:hover) {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .form-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  justify-content: center;
+  gap: 16px;
   margin-top: 32px;
-  padding-top: 16px;
-  border-top: 1px solid #e5e7eb;
 }
 
-:deep(.el-button) {
-  padding: 8px 24px;
-  font-size: 14px;
-  border-radius: 6px;
-  height: auto;
-  font-weight: 500;
+.reset-btn,
+.submit-btn {
+  min-width: 120px;
+  height: 44px;
+  font-size: 16px;
+  border-radius: 8px;
   transition: all 0.3s;
 }
 
-.submit-btn {
-  min-width: 120px;
+.reset-btn:hover {
+  background: #f5f7fa;
+  border-color: #dcdfe6;
 }
 
-:deep(.el-button:hover) {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(64,158,255,0.3);
 }
 
-/* 响应式调整 */
 @media screen and (max-width: 768px) {
   .change-password-container {
     padding: 16px;
   }
-
+  
   .change-password-card {
-    margin-left: 0;
-    padding: 20px;
-  }
-
-  .header {
-    margin-bottom: 20px;
-  }
-
-  .title-section h1 {
-    font-size: 18px;
-  }
-
-  .security-icon {
-    padding: 10px;
-  }
-
-  :deep(.el-form-item__label) {
-    padding-bottom: 4px;
-  }
-
-  .form-actions {
-    margin-top: 24px;
+    padding: 24px;
   }
 }
 </style>

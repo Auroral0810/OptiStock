@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "animate.css": "^4.1.1",
     "axios": "^1.7.9",
     "echarts": "^5.6.0",
     "element-plus": "^2.9.3",

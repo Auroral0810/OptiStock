@@ -2,10 +2,12 @@ package com.auroral.service;
 
 import com.auroral.dto.AddProductDTO;
 import com.auroral.dto.ProductListDTO;
+import com.auroral.dto.StockListDTO;
 import com.auroral.dto.UpdateProductDTO;
 import com.auroral.entity.Product;
 import com.auroral.entity.ResponseResult;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.validation.Valid;
 
 
 /**
@@ -24,5 +26,7 @@ public interface ProductService extends IService<Product> {
     ResponseResult deleteProduct(Long id);
 
     ResponseResult updateProduct( UpdateProductDTO updateProductDTO);
+
+    ResponseResult getStockList(StockListDTO stockListDTO);
 }
 

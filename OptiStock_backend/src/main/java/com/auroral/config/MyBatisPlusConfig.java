@@ -1,4 +1,4 @@
-package com.auroral.controller;
+package com.auroral.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
