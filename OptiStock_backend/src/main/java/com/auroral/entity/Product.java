@@ -44,7 +44,8 @@ public class Product {
     private Date createdAt;
     //商品信息更新时间
     private Date updatedAt;
-
+    //商品阈值
+    private Double warningThreshold;
 
 }
 

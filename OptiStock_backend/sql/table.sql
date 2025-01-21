@@ -29,6 +29,7 @@ CREATE TABLE `product`
     `stock_quantity` INT         DEFAULT 0 COMMENT '库存数量',
     `unit`           VARCHAR(20) DEFAULT '件' COMMENT '计量单位，如件、盒、瓶等',
     `status`         ENUM('上架', '下架', '停产') DEFAULT '上架' COMMENT '商品状态',
+    `warning_threshold` DECIMAL(10,2) DEFAULT 0.00 COMMENT '库存预警阈值',
     `created_at`     TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '商品创建时间',
     `updated_at`     TIMESTAMP   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '商品信息更新时间'
 ) COMMENT '商品信息表';

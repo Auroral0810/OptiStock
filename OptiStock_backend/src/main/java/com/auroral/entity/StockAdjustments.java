@@ -2,6 +2,8 @@ package com.auroral.entity;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @TableName("stock_adjustments")
 public class StockAdjustments  {
 //库存调整唯一标识符@TableId
+@TableId(type = IdType.AUTO)  // MyBatis-Plus 识别 id 为自增
     private Long id;
 
 //调整商品ID

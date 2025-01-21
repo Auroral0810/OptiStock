@@ -16,20 +16,16 @@ import java.util.Date;
  * @since 2025-01-20 12:01:06
  */
 @Data
-public class StockVo {
+public class StockThresholdVo {
     private Long id;
     //商品名称
     private String name;
     //库存单位编号（SKU）
     private String sku;
-    //商品售价
-    private Double price;
     //库存数量
     private Integer stockQuantity;
-    //商品总值
-    private Double totalValue;
-    //更新时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updatedAt;
+    //库存预警阈值
+    private Double warningThreshold;
+    //创建时间
 }
 

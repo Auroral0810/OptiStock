@@ -16,20 +16,19 @@ import java.util.Date;
  * @since 2025-01-20 12:01:06
  */
 @Data
-public class StockVo {
+public class StockAdjustVo {
+    //记录id
     private Long id;
-    //商品名称
-    private String name;
-    //库存单位编号（SKU）
-    private String sku;
-    //商品售价
-    private Double price;
-    //库存数量
-    private Integer stockQuantity;
-    //商品总值
-    private Double totalValue;
-    //更新时间
+    //商品ID
+    private Long productId;
+    //库存调整类型
+    private String adjustmentType;
+    //调整数量
+    private Integer quantity;
+    //调整备注
+    private String remarks;
+    //调整时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updatedAt;
+    private Date createdAt;
 }
 

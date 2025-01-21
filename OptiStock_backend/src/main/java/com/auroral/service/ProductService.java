@@ -9,6 +9,8 @@ import com.auroral.entity.ResponseResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.validation.Valid;
 
+import java.util.Map;
+
 
 /**
  * 商品信息表(Product)表服务接口
@@ -28,5 +30,9 @@ public interface ProductService extends IService<Product> {
     ResponseResult updateProduct( UpdateProductDTO updateProductDTO);
 
     ResponseResult getStockList(StockListDTO stockListDTO);
+
+    ResponseResult getThresholdDataList(StockListDTO stockListDTO);
+
+    ResponseResult updateThreshold(Map<String, Object> requestData);
 }
 

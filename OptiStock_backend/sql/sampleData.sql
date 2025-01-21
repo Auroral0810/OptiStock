@@ -131,3 +131,25 @@ VALUES (1, '损坏', 5, '运输过程中损坏'),
        (5, '损坏', 1, '开箱检查时发现瑕疵'),
        (6, '过期', 6, '产品更新换代，旧货已过期'),
        (7, '其他', 2, '客户退货后重新入库调整');
+-- 最近一周的数据
+INSERT INTO stock_adjustments (product_id, adjustment_type, quantity, remarks, created_at)
+VALUES
+    (1, '损坏', 5, '运输损坏', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+    (2, '过期', 10, '过期退货', DATE_SUB(NOW(), INTERVAL 5 DAY)),
+    (3, '其他', 3, '库存盘点调整', DATE_SUB(NOW(), INTERVAL 6 DAY));
+
+-- 最近一个月的数据
+INSERT INTO stock_adjustments (product_id, adjustment_type, quantity, remarks, created_at)
+VALUES
+    (1, '损坏', 7, '质量问题', DATE_SUB(NOW(), INTERVAL 10 DAY)),
+    (1, '过期', 15, '存储不当', DATE_SUB(NOW(), INTERVAL 20 DAY)),
+    (1, '其他', 8, '系统调整', DATE_SUB(NOW(), INTERVAL 25 DAY));
+
+-- 最近一年（超出一个月的数据）
+INSERT INTO stock_adjustments (product_id, adjustment_type, quantity, remarks, created_at)
+VALUES
+    (1, '损坏', 12, '仓库搬运损坏', DATE_SUB(NOW(), INTERVAL 40 DAY)),
+    (2, '过期', 20, '批次过期', DATE_SUB(NOW(), INTERVAL 90 DAY)),
+    (2, '其他', 4, '数据修正', DATE_SUB(NOW(), INTERVAL 200 DAY)),
+    (2, '损坏', 9, '外部因素影响', DATE_SUB(NOW(), INTERVAL 300 DAY)),
+    (2, '过期', 11, '临期未售出', DATE_SUB(NOW(), INTERVAL 350 DAY));

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Minus, Download, Search, Document, Refresh } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 
@@ -9,10 +9,6 @@ const chartRef = ref(null)
 const chartTimeRange = ref('week')
 const selectedRows = ref([])
 let stockChart = null
-
-// 入库和出库的颜色数组 - 使用对比度更大的颜色
-const inColors = ['#00FF00', '#00FFFF', '#00FF7F', '#7FFFD4', '#98FB98']
-const outColors = ['#FF0000', '#FF1493', '#FF4500', '#FF69B4', '#FF8C00']
 
 // 分页相关
 const currentPage = ref(1)
@@ -23,8 +19,8 @@ const total = ref(20)
 const filterForm = ref({
   name: '',
   sku: '',
-  adjustType: ''
 })
+
 // SKU选项列表
 import {getSkuListAndCategoryList} from '@/api/product'
 const skuOptions = ref([])
@@ -62,44 +58,50 @@ const initChart = () => {
 }
 
 // 更新图表数据
-const updateChart = () => {
-  if(!chartRef.value) return
+const updateChart = async () => {
+  if(!chartRef.value || selectedRows.value.length === 0) return
   
   initChart()
   
   if(!stockChart) return
-  
-  // 为每个选中的商品生成随机数据
-  const dates = ['1-15', '1-16', '1-17', '1-18', '1-19', '1-20', '1-21']
-  const series = []
-  
-  selectedRows.value.forEach((item, index) => {
-    // 入库数据
-    series.push({
-      name: `${item.productName}-入库`, 
+
+  // 获取选中行的库存记录数据
+  const recordData = []
+  for(const row of selectedRows.value) {
+    const res = await getStockAdjustRecord(row.id, chartTimeRange.value)
+    recordData.push({
+      name: row.name,
+      data: res.data
+    })
+  }
+
+  // 处理数据，按时间排序并提取数据点
+  const series = recordData.map(item => {
+    const sortedData = item.data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+    return {
+      name: item.name,
       type: 'line',
-      data: dates.map(() => Math.floor(Math.random() * 50)),
-      itemStyle: {
-        color: inColors[index % inColors.length]
-      }
-    })
-    // 出库数据
-    series.push({
-      name: `${item.productName}-出库`,
-      type: 'line', 
-      data: dates.map(() => Math.floor(Math.random() * 30)),
-      itemStyle: {
-        color: outColors[index % outColors.length]
-      }
-    })
+      data: sortedData.map(record => [
+        record.createdAt,
+        record.quantity
+      ])
+    }
   })
 
   const option = {
     title: {
-      text: '选中商品入库/出库数量趋势'
+      text: '选中商品库存调整记录'
     },
     tooltip: {
-      trigger: 'axis'
+      trigger: 'axis',
+      formatter: function(params) {
+        const time = params[0].data[0]
+        let result = `${time}<br/>`
+        params.forEach(param => {
+          result += `${param.seriesName}: ${Math.abs(param.data[1])}件<br/>`
+        })
+        return result
+      }
     },
     legend: {
       type: 'scroll',
@@ -112,11 +114,18 @@ const updateChart = () => {
       right: '15%'
     },
     xAxis: {
-      type: 'category',
-      data: dates
+      type: 'time',
+      axisLabel: {
+        formatter: '{MM}-{dd}'
+      }
     },
     yAxis: {
-      type: 'value'
+      type: 'value',
+      axisLabel: {
+        formatter: function(value) {
+          return Math.abs(value)
+        }
+      }
     },
     series: series
   }
@@ -156,36 +165,170 @@ const resetFilter = () => {
   filterForm.value = {
     name: '',
     sku: '',
-    adjustType: ''
   }
+  StockList()
 }
 
 // 处理分页
 const handleSizeChange = (val) => {
   pageSize.value = val
   currentPage.value = 1
+  StockList()
 }
 
 const handlePageChange = (val) => {
   currentPage.value = val
+  StockList()
 }
 
-// 库存调整相关
-const adjustDialogVisible = ref(false)
-
-// 打开调整库存对话框
-const openAdjustStockDialog = (row) => {
-  adjustDialogVisible.value = true
+import {getStockList,adjustStock,getStockAdjustRecord} from '@/api/stock'
+import {useStockStore} from '@/stores/stock'
+const stockStore = useStockStore()
+//获取库存数据
+const StockList = async () => {
+  const res = await getStockList(currentPage.value, pageSize.value, filterForm.value)
+  console.log(res)
+  inventoryData.value = res.data.rows
+  console.log(inventoryData.value)
+  total.value = res.data.total
+  //存储到store中
+  stockStore.setStockList(inventoryData.value)
 }
+StockList()
+//导出数据,导出成csv文件，数据存储在inventoryData中
+//要求先设置表头
+const exportStockData = () => {
+  const headers = ['商品名称', 'SKU', '库存数量', '商品总值', '最后更新时间']
+  const csvContent = headers.join(',') + '\n' + inventoryData.value.map(item => `${item.name},${item.sku},${item.stockQuantity},${item.totalValue},${item.updatedAt}`).join('\n')
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'stock.csv'
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+// 调整库存相关数据
+const drawerVisible = ref(false)
+const adjustForm = ref({
+  productId: '',
+  name: '',
+  sku: '',
+  currentStock: 0,
+  quantity: 0,
+  adjustmentType: '',
+  remarks: ''
+})
+
+// 表单校验规则
+const rules = ref({
+  adjustmentType: [
+    { required: true, message: '请选择调整类型', trigger: 'blur' }
+  ],
+  quantity: [
+    { required: true, message: '请输入调整数量', trigger: 'blur' },
+    { type: 'number', min: 1, message: '调整数量必须大于0', trigger: 'blur' },
+    { validator: (rule, value, callback) => {
+      if (value > adjustForm.value.currentStock) {
+        callback(new Error('调整数量不能大于当前库存'))
+      } else {
+        callback()
+      }
+    }, trigger: 'blur' }
+  ],
+  remarks: [
+    { required: true, message: '请输入调整备注', trigger: 'blur' },
+    { min: 2, max: 100, message: '备注长度在2-100个字符之间', trigger: 'blur' }
+  ]
+})
+
+// 调整类型选项
+const adjustTypeOptions = [
+  { label: '过期', value: '过期' },
+  { label: '损坏', value: '损坏' },
+  { label: '其他', value: '其他' }
+]
+
+// 打开调整库存抽屉
+const openAdjustDrawer = (row) => {
+  if(row.stockQuantity === 0) {
+    ElMessage.warning('库存为0，无法调整')
+    return
+  }
+  adjustForm.value = {
+    productId: row.id,
+    name: row.name,
+    sku: row.sku,
+    currentStock: row.stockQuantity,
+    quantity: 0,
+    adjustmentType: '',
+    remarks: ''
+  }
+  drawerVisible.value = true
+}
+
+const adjustFormRef = ref(null)
+
 
 // 提交库存调整
-const submitAdjustment = () => {
-  ElMessage.success('库存调整成功')
-  adjustDialogVisible.value = false
+const submitStockAdjust = async () => {
+  await adjustFormRef.value.validate(async (valid) => {
+    if (valid) {
+      try {
+        // 弹出确认框
+        await ElMessageBox.confirm(
+          `确认要调整 ${adjustForm.value.name} 的库存吗？调整数量: ${adjustForm.value.quantity}`,
+          '确认调整',
+          {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }
+        )
+
+        await adjustStock(adjustForm.value)
+        ElMessage.success('库存调整成功!')
+        drawerVisible.value = false
+        StockList() // 刷新列表
+      } catch(error) {
+        if (error === 'cancel') {
+          return
+        }
+        ElMessage.error('库存调整失败')
+      }
+    }
+  })
 }
 
-//获取商品数据
-// const
+// 库存记录相关数据
+const recordVisible = ref(false) // 记录表格是否显示
+const recordTableData = ref([]) // 记录表格数据
+const recordTimeRange = ref('week') // 时间范围选择
+const recordDialogTitle = ref('') // 弹窗标题
+const currentProductId = ref(null) // 当前查看记录的商品ID
+
+// 打开记录弹窗
+const openRecordDialog = async (row) => {
+  recordDialogTitle.value = `${row.name} - 库存调整记录`
+  recordVisible.value = true
+  currentProductId.value = row.id
+  await fetchRecordData()
+}
+
+// 获取记录数据
+const fetchRecordData = async () => {
+  if (!currentProductId.value) return
+  const res = await getStockAdjustRecord(currentProductId.value, recordTimeRange.value)
+  recordTableData.value = res.data
+}
+
+// 监听时间范围变化
+watch(recordTimeRange, async () => {
+  await fetchRecordData()
+})
 </script>
 
 <template>
@@ -198,9 +341,7 @@ const submitAdjustment = () => {
           <span class="subtitle">管理仓库库存、入库、出库及调整记录</span>
         </div>
         <div class="action-section">
-          <el-button type="primary" :icon="Plus" class="action-btn">新增入库</el-button>
-          <el-button type="warning" :icon="Minus" class="action-btn">新增出库</el-button>
-          <el-button type="success" :icon="Download" class="action-btn">导出库存数据</el-button>
+          <el-button type="success" :icon="Download" class="action-btn" @click="exportStockData">导出当前页</el-button>
         </div>
       </div>
 
@@ -236,7 +377,7 @@ const submitAdjustment = () => {
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" :icon="Search" plain class="filter-btn">查询</el-button>
+              <el-button type="primary" :icon="Search" plain class="filter-btn" @click="StockList()">查询</el-button>
               <el-button :icon="Refresh" @click="resetFilter" class="filter-btn">重置</el-button>
             </el-form-item>
           </div>
@@ -255,29 +396,34 @@ const submitAdjustment = () => {
       >
         <el-table-column type="selection" width="55" :selectable="() => true" />
         <el-table-column prop="id" label="ID" width="100" />
-        <el-table-column prop="productName" label="商品名称" min-width="180" />
+        <el-table-column prop="name" label="商品名称" min-width="180" />
         <el-table-column prop="sku" label="SKU" width="150" />
-        <el-table-column prop="quantity" label="库存数量" width="150" align="center">
+        <el-table-column prop="stockQuantity" label="库存数量" width="100" align="center">
           <template #default="{ row }">
             <el-tag 
               effect="light"
               class="stock-tag"
             >
-              {{ row.quantity }}
+              {{ row.stockQuantity }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="totalValue" label="商品总值" width="150" align="right">
           <template #default="{ row }">
-            ¥{{ (row.price * row.quantity).toFixed(2) }}
+            <el-tag 
+              type="success"
+              effect="dark"
+              class="value-tag"
+            >
+              ¥{{ row.totalValue }}
+            </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="lastUpdate" label="最后更新时间" width="180" />
+        <el-table-column prop="updatedAt" label="最后更新时间" width="180" />
         <el-table-column label="操作" width="250" align="center">
           <template #default="{ row }">
-            <el-button type="primary" link @click="openAdjustStockDialog(row)">调整库存</el-button>
-            <el-button type="success" link>查看记录</el-button>
-            <el-button type="danger" link>删除</el-button>
+            <el-button type="primary" link @click="openAdjustDrawer(row)">调整库存</el-button>
+            <el-button type="success" link @click="openRecordDialog(row)">查看记录</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -302,10 +448,11 @@ const submitAdjustment = () => {
         <el-card class="chart-card" shadow="hover">
           <template #header>
             <div class="chart-header">
-              <span>选中商品库存变动趋势</span>
+              <span>选中商品库存调整记录</span>
               <el-radio-group v-model="chartTimeRange" size="small">
                 <el-radio-button label="week">近7天</el-radio-button>
                 <el-radio-button label="month">近30天</el-radio-button>
+                <el-radio-button label="year">近1年</el-radio-button>
               </el-radio-group>
             </div>
           </template>
@@ -316,6 +463,108 @@ const submitAdjustment = () => {
         </el-card>
       </div>
     </el-card>
+
+    <!-- 调整库存抽屉 -->
+    <el-drawer
+      v-model="drawerVisible"
+      title="调整库存"
+      size="30%"
+      :destroy-on-close="true"
+    >
+      <el-form 
+        ref="adjustFormRef"
+        :model="adjustForm" 
+        :rules="rules"
+        label-width="100px"
+        @validate="$event"
+      >
+        <el-form-item label="商品名称">
+          <el-input v-model="adjustForm.name" disabled />
+        </el-form-item>
+        <el-form-item label="SKU">
+          <el-input v-model="adjustForm.sku" disabled />
+        </el-form-item>
+        <el-form-item label="当前库存">
+          <el-input v-model="adjustForm.currentStock" disabled>
+            <template #append>件</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="调整类型" prop="adjustmentType">
+          <el-select 
+            v-model="adjustForm.adjustmentType" 
+            placeholder="请选择调整类型"
+            @blur="$refs.adjustFormRef.validateField('adjustmentType')"
+          >
+            <el-option
+              v-for="item in adjustTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="调整数量" prop="quantity">
+          <el-input-number 
+            v-model="adjustForm.quantity"
+            :min="1"
+            :max="adjustForm.currentStock"
+            placeholder="输入调整数量"
+            @blur="$refs.adjustFormRef.validateField('quantity')"
+          >
+          </el-input-number>
+          <div class="adjust-tip">不可用库存数量</div>
+        </el-form-item>
+        <el-form-item label="调整备注" prop="remarks">
+          <el-input 
+            v-model="adjustForm.remarks"
+            type="textarea"
+            rows="3"
+            placeholder="请输入调整原因"
+            @blur="$refs.adjustFormRef.validateField('remarks')"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div style="flex: auto">
+          <el-button @click="drawerVisible = false">取消</el-button>
+          <el-button type="primary" @click="submitStockAdjust">确认调整</el-button>
+        </div>
+      </template>
+    </el-drawer>
+
+    <!-- 库存记录弹窗 -->
+    <el-dialog
+      v-model="recordVisible"
+      :title="recordDialogTitle"
+      width="60%"
+      :destroy-on-close="true"
+    >
+      <div class="record-header">
+        <el-radio-group v-model="recordTimeRange" size="small">
+          <el-radio-button label="week">近7天</el-radio-button>
+          <el-radio-button label="month">近30天</el-radio-button>
+          <el-radio-button label="year">近1年</el-radio-button>
+        </el-radio-group>
+      </div>
+
+      <el-table :data="recordTableData" border stripe class="record-table">
+        <el-table-column prop="id" label="记录ID" width="100" />
+        <el-table-column prop="adjustmentType" label="调整类型" width="120" />
+        <el-table-column prop="quantity" label="调整数量" width="120">
+          <template #default="{ row }">
+            <el-tag type="danger">-{{ row.quantity }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="remarks" label="调整备注" min-width="200" />
+        <el-table-column prop="createdAt" label="调整时间" width="180" />
+      </el-table>
+
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="recordVisible = false">关闭</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -371,5 +620,13 @@ const submitAdjustment = () => {
   align-items: center;
   color: #909399;
   font-size: 16px;
+}
+
+.record-header {
+  margin-bottom: 20px;
+}
+
+.record-table {
+  margin: 20px 0;
 }
 </style>

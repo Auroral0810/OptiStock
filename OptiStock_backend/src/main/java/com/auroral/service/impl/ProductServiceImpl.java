@@ -8,10 +8,7 @@ import com.auroral.enums.AppHttpCodeEnum;
 import com.auroral.mapper.ProductMapper;
 import com.auroral.service.ProductService;
 import com.auroral.utils.BeanCopyUtils;
-import com.auroral.vo.PageVo;
-import com.auroral.vo.ProductVo;
-import com.auroral.vo.SkuAndCategoryVo;
-import com.auroral.vo.StockVo;
+import com.auroral.vo.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -174,14 +172,13 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     //获取库存记录
-
     @Override
     public ResponseResult getStockList(StockListDTO stockListDTO) {
         /*1.根据条件查询商品信息
-        * 2.封装Vo对象
-        * 3.计算总价值
-        * 4.返回结果
-        * */
+         * 2.封装Vo对象
+         * 3.计算总价值
+         * 4.返回结果
+         * */
         //先获取查询条件
         Integer pageNum = stockListDTO.getPageNum() != null ? stockListDTO.getPageNum() : 1;
         Integer pageSize = stockListDTO.getPageSize() != null ? stockListDTO.getPageSize() : 10;
@@ -196,7 +193,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         if (sku != null && !sku.trim().isEmpty()) {
             queryWrapper.like(Product::getSku, sku.trim());
         }
-        queryWrapper.orderByDesc(Product::getId);
+        queryWrapper.orderByAsc(Product::getId);
         //执行查询
         page(page, queryWrapper);
         //获取数据
@@ -206,14 +203,70 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         //计算总价值
         stockVoList.stream()
                 .map(product -> {
-                     product.setTotalValue(product.getPrice() * product.getStockQuantity());
-                     return product;
-                 })
+                    product.setTotalValue(product.getPrice() * product.getStockQuantity());
+                    return product;
+                })
                 .collect(Collectors.toList());
         //返回结果
         PageVo pageVo = new PageVo(stockVoList, page.getTotal());
         return ResponseResult.okResult(pageVo);
     }
-}
 
+    //获取阈值数据
+
+    @Override
+    public ResponseResult getThresholdDataList(StockListDTO stockListDTO) {
+        /*1.根据条件查询商品信息
+         * 2.封装Vo对象
+         * 3.返回结果
+         * */
+        //先获取查询条件
+        Integer pageNum = stockListDTO.getPageNum() != null ? stockListDTO.getPageNum() : 1;
+        Integer pageSize = stockListDTO.getPageSize() != null ? stockListDTO.getPageSize() : 10;
+        String name = stockListDTO.getFilterForm().getName();
+        String sku = stockListDTO.getFilterForm().getSku();
+        Page<Product> page = new Page<>(pageNum, pageSize);
+        //构建查询条件
+        LambdaQueryWrapper<Product> queryWrapper = new LambdaQueryWrapper<>();
+        if (name != null && !name.trim().isEmpty()) {
+            queryWrapper.like(Product::getName, name.trim());
+        }
+        if (sku != null && !sku.trim().isEmpty()) {
+            queryWrapper.like(Product::getSku, sku.trim());
+        }
+        queryWrapper.orderByAsc(Product::getId);
+        //执行查询
+        page(page, queryWrapper);
+        //获取数据
+        List<Product> productList = page.getRecords();
+        //封装VO
+        List<StockThresholdVo> stockThresholdVoList = BeanCopyUtils.copyBeanList(productList, StockThresholdVo.class);
+        //返回结果
+        PageVo pageVo = new PageVo(stockThresholdVoList, page.getTotal());
+        return ResponseResult.okResult(pageVo);
+    }
+    //更新阈值
+
+    @Override
+    public ResponseResult updateThreshold(Map<String, Object> requestData) {
+        /*1.获取参数
+         * 2.根据商品ID更新阈值
+         * 3.返回结果
+         * */
+        /*1. 获取参数 */
+        Long productId = Long.parseLong(requestData.get("id").toString());
+        Double threshold = Double.parseDouble(requestData.get("newThreshold").toString());
+        // 2. 直接更新商品的预警阈值
+        Product product = new Product();
+        product.setId(productId);
+        product.setWarningThreshold(threshold);
+
+        boolean isUpdated = updateById(product);
+
+        // 3. 返回结果
+        return isUpdated ? ResponseResult.okResult("更新成功")
+                : ResponseResult.errorResult(AppHttpCodeEnum.PARAM_ERROR, "更新失败，商品不存在");
+    }
+
+}
 

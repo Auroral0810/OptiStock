@@ -1,5 +1,7 @@
 package com.auroral.service;
 
+import com.auroral.dto.AdjustStockDTO;
+import com.auroral.entity.ResponseResult;
 import com.auroral.entity.StockAdjustments;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +14,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface StockAdjustmentsService extends IService<StockAdjustments> {
 
+    ResponseResult adjustStock(AdjustStockDTO adjustStockDTO);
+
+    ResponseResult getStockAdjustRecord(Long id,String timeRange);
 }
 
