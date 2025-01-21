@@ -1,14 +1,13 @@
-package com.auroral.entity;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package com.auroral.vo;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import com.baomidou.mybatisplus.annotation.TableName;
 /**
  * 供应商信息表(Supplier)表实体类
  *
@@ -19,10 +18,8 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("supplier")
-public class Supplier {
+public class SupplierVo  {
     //供应商唯一标识符@TableId
-    @TableId(type = IdType.AUTO)  // MyBatis-Plus 识别 id 为自增
     private Long id;
 
     //供应商名称
@@ -35,9 +32,5 @@ public class Supplier {
     private String email;
     //供应商地址
     private String address;
-    //创建时间
-    private Date createdAt;
-
-
 }
 

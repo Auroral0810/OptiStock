@@ -436,7 +436,7 @@ watch(recordTimeRange, async () => {
           :total="total"
           :page-sizes="[5, 10, 20, 50]"
           background
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="jumper,total, sizes, prev, pager, next"
           @size-change="handleSizeChange"
           @current-change="handlePageChange"
           class="custom-pagination"

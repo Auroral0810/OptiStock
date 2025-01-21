@@ -350,7 +350,7 @@ const confirmUpdateThreshold = (row) => {
           v-model:page-size="pageSize"
           :page-sizes="[5, 10, 20, 50]"
           :total="total"
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="jumper,total, sizes, prev, pager, next"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />

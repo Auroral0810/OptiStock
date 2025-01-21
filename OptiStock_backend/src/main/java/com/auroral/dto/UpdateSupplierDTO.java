@@ -1,4 +1,4 @@
-package com.auroral.entity;
+package com.auroral.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -19,12 +20,9 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("supplier")
-public class Supplier {
+public class UpdateSupplierDTO{
     //供应商唯一标识符@TableId
-    @TableId(type = IdType.AUTO)  // MyBatis-Plus 识别 id 为自增
     private Long id;
-
     //供应商名称
     private String name;
     //联系人姓名
@@ -35,9 +33,5 @@ public class Supplier {
     private String email;
     //供应商地址
     private String address;
-    //创建时间
-    private Date createdAt;
-
-
 }
 

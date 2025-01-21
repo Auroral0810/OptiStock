@@ -3,15 +3,23 @@ import { ref } from 'vue'
 import { Setting, Tools, Bell, Message, Lock, Link } from '@element-plus/icons-vue'
 
 const systemInfo = ref({
-  siteName: '智能仓储管理系统',
-  version: 'v1.0.0',
-  copyright: '© 2024 智能仓储管理系统 版权所有',
+  siteName: 'OptiStock 仓储管理系统',
+  version: 'v2.0.0', 
+  copyright: '© 2024 OptiStock 版权所有',
   author: '俞云烽',
   contact: '15968588744@163.com',
-  description: '本系统是一个现代化的仓储管理系统，提供商品管理、库存管理、订单处理等功能。采用Vue 3 + Element Plus开发,具有良好的用户体验和功能完整性。',
+  description: 'OptiStock 是一个现代化的仓储管理系统，采用 Vue 3 + Spring Boot 技术栈开发，提供库存管理、商品管理、库存预警等核心功能。系统架构采用前后端分离设计，具有高性能、高可用、易扩展等特点。',
   license: 'MIT License',
-  github: 'https://github.com/Auroral0810/OptiStock.git',
-  techs: ['Vue 3', 'Element Plus', 'Vite', 'Pinia', 'Vue Router'],
+  github: 'https://github.com/Auroral0810/OptiStock',
+  techs: [
+    'Vue 3',
+    'Spring Boot', 
+    'Redis',
+    'Element Plus',
+    'JWT',
+    '阿里云OSS',
+    'MyBatis-Plus'
+  ],
   links: [
     {
       name: 'GitHub',
@@ -22,7 +30,7 @@ const systemInfo = ref({
     {
       name: 'CSDN博客',
       url: 'https://blog.csdn.net/Luck_ff?type=blog',
-      icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico',
+      icon: 'https://g.csdnimg.cn/static/logo/favicon32.ico', 
       color: '#fc5531'
     },
     {
@@ -92,7 +100,8 @@ const openLink = (url) => {
             v-model="systemInfo.description"
             type="textarea"
             readonly
-            :rows="4"
+            resize="none"
+            :rows="3"
             class="custom-textarea"/>
         </el-form-item>
 
@@ -121,17 +130,17 @@ const openLink = (url) => {
         <el-form-item label="联系邮箱">
           <el-input v-model="systemInfo.contact" readonly class="custom-input"/>
         </el-form-item>
-
         <el-form-item label="项目地址">
-          <el-button 
-            type="primary" 
-            class="github-button"
-            @click="openLink(systemInfo.github)">
+          <el-link 
+            type="primary"
+            :href="systemInfo.github"
+            target="_blank"
+            class="github-link">
             <el-icon><Link /></el-icon>
             {{ systemInfo.github }}
-          </el-button>
+          </el-link>
         </el-form-item>
-
+        
         <el-divider content-position="left">
           <el-icon class="divider-icon"><Lock /></el-icon>
           技术栈
@@ -155,9 +164,10 @@ const openLink = (url) => {
 
 <style scoped>
 .system-config-container {
-  padding: 20px;
+  padding: 16px;
   background-color: #f5f7fa;
-  min-height: calc(100vh - 60px);
+  height: 100vh;
+  overflow: hidden;
 }
 
 .config-card {
@@ -165,6 +175,8 @@ const openLink = (url) => {
   border-radius: 8px;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
   padding: 20px;
+  height: calc(100% - 40px);
+  overflow-y: auto;
 }
 
 .header {
@@ -228,7 +240,7 @@ const openLink = (url) => {
 }
 
 .el-divider {
-  margin: 24px 0;
+  margin: 22px 0;
 }
 
 :deep(.el-divider__text) {
@@ -261,12 +273,12 @@ const openLink = (url) => {
 }
 
 .tech-tag {
-  margin-right: 8px;
-  margin-bottom: 8px;
-  padding: 0 12px;
-  height: 32px;
-  line-height: 30px;
-  font-size: 14px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  padding: 0 10px;
+  height: 28px;
+  line-height: 26px;
+  font-size: 13px;
   transition: all 0.3s;
 }
 
@@ -281,7 +293,7 @@ const openLink = (url) => {
 .github-button {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: linear-gradient(45deg, #409EFF, #36D1DC);
   border: none;
   transition: all 0.3s;
