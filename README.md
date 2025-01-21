@@ -1,6 +1,3 @@
-我帮你写一个完整的 README.md：
-
-```markdown
 # OptiStock 仓储管理系统
 
 OptiStock 是一个现代化的仓储管理系统，采用 Vue 3 + Spring Boot 技术栈开发，提供库存管理、商品管理、库存预警等核心功能。
@@ -156,5 +153,5 @@ http://localhost:9092/swagger-ui/index.html
 ## 联系方式
 - 作者：俞云烽
 - 邮箱：15968588744@163.com
-- GitHub：[[Your GitHub Profile]](https://github.com/Auroral0810/OptiStock)
-```
+- GitHub：https://github.com/Auroral0810/OptiStock
+
