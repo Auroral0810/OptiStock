@@ -50,3 +50,34 @@ export const getProductName = () => {
     method: "get"
   })
 }
+//获取退货订单列表
+export const getReturnOrderList = (pageNum, pageSize, filterForm) => {
+  return request({
+    url: "/returnorder/getReturnOrderList",
+    method: "post",
+    data: {
+      pageNum,
+      pageSize,
+      filterForm
+    }
+  })
+}
+// 处理退货申请
+export const handleReturnOrder = (id, returnStatus, reason) => {
+  return request({
+    url: `/returnorder/handleReturnOrder`,
+    method: "patch",
+    data: {
+      id,
+      returnStatus,
+      reason
+    }
+  })
+}
+//删除退货订单
+export const deleteReturnOrder = (id) => {
+  return request({
+    url: `/returnorder/deleteReturnOrder?id=${id}`,
+    method: "delete"
+  })
+}

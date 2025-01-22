@@ -2,6 +2,7 @@ package com.auroral.service;
 
 import com.auroral.dto.AddOrderDTO;
 import com.auroral.dto.OrderListDTO;
+import com.auroral.dto.ReturnOrderListDTO;
 import com.auroral.dto.UpdateOrderDTO;
 import com.auroral.entity.Order;
 import com.auroral.entity.ResponseResult;
@@ -27,5 +28,6 @@ public interface OrderService extends IService<Order> {
     ResponseResult deleteOrder(String orderNumber);
 
     ResponseResult updateOrder(UpdateOrderDTO updateOrderDTO);
+
 }
 

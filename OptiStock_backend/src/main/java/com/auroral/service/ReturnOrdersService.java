@@ -1,7 +1,11 @@
 package com.auroral.service;
 
+import com.auroral.dto.HandleReturnOrderDTO;
+import com.auroral.dto.ReturnOrderListDTO;
+import com.auroral.entity.ResponseResult;
 import com.auroral.entity.ReturnOrders;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.validation.Valid;
 
 
 /**
@@ -12,5 +16,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ReturnOrdersService extends IService<ReturnOrders> {
 
+    ResponseResult getReturnOrderList(ReturnOrderListDTO returnOrderListDTO);
+
+    ResponseResult handleReturnOrder(@Valid HandleReturnOrderDTO handleReturnOrderDTO);
+
+    ResponseResult deleteReturnOrder(String id);
 }
 

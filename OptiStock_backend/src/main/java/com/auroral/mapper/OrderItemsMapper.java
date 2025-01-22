@@ -2,6 +2,7 @@ package com.auroral.mapper;
 
 import com.auroral.entity.OrderItems;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
 
 
 /**
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2025-01-22 14:54:57
  */
 public interface OrderItemsMapper extends BaseMapper<OrderItems> {
-
+    @Select("SELECT * FROM order_items WHERE order_id = #{orderId} LIMIT 1")
+    OrderItems selectByOrderId(Long orderId);
 }
 
