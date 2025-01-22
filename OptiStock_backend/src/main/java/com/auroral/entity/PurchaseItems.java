@@ -9,28 +9,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableName;
 /**
- * 采购订单表(PurchaseOrder)表实体类
+ * 采购商品详情表(PurchaseItems)表实体类
  *
  * @author makejava
- * @since 2025-01-21 20:19:54
+ * @since 2025-01-21 23:03:34
  */
 @SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("purchase_order")
-public class PurchaseOrder  {
+@TableName("purchase_items")
+public class PurchaseItems  {
     //分类唯一标识符@TableId
     @TableId(type = IdType.AUTO)  // MyBatis-Plus 识别 id 为自增
     private Long id;
 
-//供应商ID
-    private Long supplierId;
-//采购总成本
-    private Double totalCost;
-//采购订单状态
-    private String status;
-//采购订单创建时间
+//采购订单ID
+    private Long purchaseOrderId;
+//商品ID
+    private Long productId;
+//采购数量
+    private Integer quantity;
+//采购成本单价
+    private Double costPrice;
+//采购总价格
+    private Double totalPrice;
+//创建时间
     private Date createdAt;
 
 

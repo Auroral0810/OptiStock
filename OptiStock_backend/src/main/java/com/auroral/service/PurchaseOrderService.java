@@ -1,6 +1,9 @@
 package com.auroral.service;
 
+import com.auroral.dto.AddPurchaseOrderDTO;
+import com.auroral.dto.PurchaseOrderListDTO;
 import com.auroral.entity.PurchaseOrder;
+import com.auroral.entity.ResponseResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 
@@ -12,5 +15,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PurchaseOrderService extends IService<PurchaseOrder> {
 
+    ResponseResult getPurchaseOrderList(PurchaseOrderListDTO purchaseOrderListDTO);
+
+    ResponseResult deletePurchaseOrder(String id);
+
+    ResponseResult auditPurchaseOrder(Long id, String status);
+
+    ResponseResult getSupplierAndProduct();
+
+    ResponseResult addPurchaseOrder(AddPurchaseOrderDTO addPurchaseOrderDTO);
 }
 

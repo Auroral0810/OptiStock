@@ -72,6 +72,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Integer currentPage = requestDTO.getPageNum() != null ? requestDTO.getPageNum() : 1;
         Integer pageSize = requestDTO.getPageSize() != null ? requestDTO.getPageSize() : 10;
 
+
         ProductFilterDTO filter = requestDTO.getFilterForm();
         Page<Product> page = new Page<>(currentPage, pageSize);
 

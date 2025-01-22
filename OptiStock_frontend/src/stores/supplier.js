@@ -14,6 +14,9 @@ export const useSupplierStore = defineStore("supplierList", {
         getSupplierList() {
             return this.supplierList;
         },
+        getSupplierByName(name) {
+            return this.supplierList.find(item => item.name === name);
+        }
     },
     persist: true, // 开启持久化（VueUse）
 });
