@@ -74,5 +74,6 @@ public class StockAdjustmentsServiceImpl extends ServiceImpl<StockAdjustmentsMap
         return ResponseResult.okResult(stockAdjustVoList);
     }
 
+
 }
 

@@ -45,11 +45,11 @@ const menuItems = [
     {
       index: '4',
       icon: SoldOut,
-      title: '订单与出库',
+      title: '订单与退货',
       children: [
         { index: '4-1', title: '订单管理', path: '/order/manage' },
-        { index: '4-2', title: '订单出库', path: '/order/stockout' },
-        { index: '4-3', title: '退货管理', path: '/order/return' }
+        // { index: '4-2', title: '订单出库', path: '/order/stockout' },
+        { index: '4-2', title: '退货管理', path: '/order/return' }
       ]
     },
     {

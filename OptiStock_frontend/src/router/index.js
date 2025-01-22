@@ -30,7 +30,7 @@ const routes = [
 
       // 订单与出库
       { path: '/order/manage', name: 'OrderManage', component: () => import('@/pages/Order/OrderManage.vue') },
-      { path: '/order/stockout', name: 'OrderStockout', component: () => import('@/pages/Order/OrderStockout.vue') },
+      // { path: '/order/stockout', name: 'OrderStockout', component: () => import('@/pages/Order/OrderStockout.vue') },
       { path: '/order/return', name: 'OrderReturn', component: () => import('@/pages/Order/OrderReturn.vue') },
 
       // 数据统计
