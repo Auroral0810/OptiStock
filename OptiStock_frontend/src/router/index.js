@@ -23,9 +23,9 @@ const routes = [
       { path: '/product/warning', name: 'ProductWarning', component: () => import('@/pages/Product/ProductWarning.vue') },
 
       // 采购管理
-      { path: '/purchase/plan', name: 'PurchasePlan', component: () => import('@/pages/Purchase/PurchasePlan.vue') },
+      // { path: '/purchase/plan', name: 'PurchasePlan', component: () => import('@/pages/Purchase/PurchasePlan.vue') },
       { path: '/purchase/order', name: 'PurchaseOrder', component: () => import('@/pages/Purchase/PurchaseOrder.vue') },
-      { path: '/purchase/stockin', name: 'PurchaseStockin', component: () => import('@/pages/Purchase/PurchaseStockin.vue') },
+      // { path: '/purchase/stockin', name: 'PurchaseStockin', component: () => import('@/pages/Purchase/PurchaseStockin.vue') },
       { path: '/purchase/supplier', name: 'PurchaseSupplier', component: () => import('@/pages/Purchase/PurchaseSupplier.vue') },
 
       // 订单与出库

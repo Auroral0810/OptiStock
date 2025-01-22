@@ -5,8 +5,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 
 // 分页相关
 const currentPage = ref(1)
-const pageSize = ref(5)
-const total = ref(0)
+const pageSize = ref(10)
+const total = ref(20)
 // 搜索表单
 const filterForm = ref({
   name: '',
@@ -410,7 +410,7 @@ const handleEdit = () => {
           v-model:current-page="currentPage"
           v-model:page-size="pageSize"
           :total="total"
-          :page-sizes="[5, 10, 20, 50]"
+          :page-sizes="[10, 20, 30, 50]"
           layout="jumper,total, sizes, prev, pager, next"
           @size-change="handleSizeChange"
           @current-change="handlePageChange"

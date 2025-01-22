@@ -1,6 +1,7 @@
 package com.auroral.mapper;
 
 import com.auroral.entity.Product;
+import com.auroral.vo.ProductNameVo;
 import com.auroral.vo.SupplierAndProductVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,6 +23,7 @@ public interface ProductMapper extends BaseMapper<Product> {
     @Select("SELECT id AS productId, name AS productName,cost_price AS costPrice FROM product")
     List<SupplierAndProductVo.ProductInfo> getAllProducts();
 
-
+    @Select("SELECT id AS productId, name AS productName,price AS price, stock_quantity AS stockQuantity FROM product")
+    List<ProductNameVo.ProductInfo> getProductName();
 }
 

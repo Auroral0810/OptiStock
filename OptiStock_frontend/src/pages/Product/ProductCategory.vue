@@ -6,9 +6,8 @@ import { useProductCategoryStore } from '@/stores/productCategoryStore'
 
 const productCategoryStore = useProductCategoryStore()
 const currentPage = ref(1)
-const pageSize = ref(5)
-const total = ref(100)
-const parent=ref()
+const pageSize = ref(10)
+const total = ref(20)
 //抽屉的名称
 const title = ref('添加分类')
 //搜索条件
@@ -286,7 +285,7 @@ const handleDelete = (row) => {
 
       <!-- 分页器 -->
       <div class="pagination-section">
-        <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[5, 10, 25, 20]"
+        <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[10, 20, 30, 50]"
           layout="jumper,total, sizes, prev, pager, next" :total="total" @size-change="handleSizeChange"
           @current-change="handlePageChange" />
       </div>

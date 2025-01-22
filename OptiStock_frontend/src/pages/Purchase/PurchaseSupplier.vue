@@ -7,7 +7,7 @@ import { Plus, Download, Search, Refresh } from '@element-plus/icons-vue'
 const loading = ref(false)
 const supplierList = ref([])
 const currentPage = ref(1)
-const pageSize = ref(5)
+const pageSize = ref(10)
 const total = ref(20)
 
 // 过滤表单
@@ -251,8 +251,8 @@ const handleDelete = (row) => {
           v-model:current-page="currentPage"
           v-model:page-size="pageSize"
           :total="total"
-          :page-sizes="[5, 10, 20, 50]"
-          layout="total, sizes, prev, pager, next, jumper"
+          :page-sizes="[10, 20, 30, 50]"
+          layout="jumper,total, sizes, prev, pager, next"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />

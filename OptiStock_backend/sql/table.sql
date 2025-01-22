@@ -82,20 +82,49 @@ CREATE TABLE `supplier`
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
 ) COMMENT '供应商信息表';
 
+-- -- ==============================================
+-- --               3️⃣ 订单管理模块
+-- -- ==============================================
+--
+-- CREATE TABLE `order`
+-- (
+--     `id`           BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '订单唯一标识符',
+--     `order_number` VARCHAR(50) UNIQUE NOT NULL COMMENT '订单编号',
+--     `customer_id`  BIGINT             NOT NULL COMMENT '客户ID',
+--     `total_amount` DECIMAL(10, 2)     NOT NULL COMMENT '订单总金额',
+--     `status`       ENUM('待付款', '已付款', '待发货', '已发货', '已完成', '已取消') NOT NULL DEFAULT '待付款' COMMENT '订单状态',
+--     `created_at`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间'
+-- ) COMMENT '订单信息表';
+--
+-- CREATE TABLE `order_items`
+-- (
+--     `id`          BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '订单商品唯一标识符',
+--     `order_id`    BIGINT         NOT NULL COMMENT '关联的订单ID',
+--     `product_id`  BIGINT         NOT NULL COMMENT '商品ID',
+--     `quantity`    INT            NOT NULL COMMENT '商品数量',
+--     `price`       DECIMAL(10, 2) NOT NULL COMMENT '商品单价',
+--     `total_price` DECIMAL(10, 2) NOT NULL COMMENT '商品总价',
+--     `created_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+-- ) COMMENT '订单商品详情表';
 -- ==============================================
---               3️⃣ 订单管理模块
+--               3️⃣ 订单管理模块（更新版）
 -- ==============================================
 
+-- 订单信息表（移除 customer_id，新增客户信息字段）
 CREATE TABLE `order`
 (
-    `id`           BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '订单唯一标识符',
-    `order_number` VARCHAR(50) UNIQUE NOT NULL COMMENT '订单编号',
-    `customer_id`  BIGINT             NOT NULL COMMENT '客户ID',
-    `total_amount` DECIMAL(10, 2)     NOT NULL COMMENT '订单总金额',
-    `status`       ENUM('待付款', '已付款', '待发货', '已发货', '已完成', '已取消') NOT NULL DEFAULT '待付款' COMMENT '订单状态',
-    `created_at`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间'
-) COMMENT '订单信息表';
+    `id`             BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '订单唯一标识符',
+    `order_number`   VARCHAR(50) UNIQUE NOT NULL COMMENT '订单编号',
+    `customer_name`  VARCHAR(100) NOT NULL COMMENT '客户姓名',
+    `platform`       VARCHAR(50)  NOT NULL COMMENT '客户下单平台（如淘宝、拼多多等）',
+    `phone`          VARCHAR(20)  NOT NULL COMMENT '客户联系电话',
+    `address`        VARCHAR(255) NOT NULL COMMENT '客户收货地址',
+    `total_amount`   DECIMAL(10, 2) NOT NULL COMMENT '订单总金额',
+    `status`         ENUM('待付款', '已付款', '待发货', '已发货', '已完成', '已取消') NOT NULL DEFAULT '待付款' COMMENT '订单状态',
+    `created_at`     TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间'
+) COMMENT '订单信息表，包含客户信息';
 
+-- 订单商品详情表
 CREATE TABLE `order_items`
 (
     `id`          BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '订单商品唯一标识符',
@@ -104,8 +133,22 @@ CREATE TABLE `order_items`
     `quantity`    INT            NOT NULL COMMENT '商品数量',
     `price`       DECIMAL(10, 2) NOT NULL COMMENT '商品单价',
     `total_price` DECIMAL(10, 2) NOT NULL COMMENT '商品总价',
-    `created_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+    `created_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    FOREIGN KEY (`order_id`) REFERENCES `order`(`id`) ON DELETE CASCADE
 ) COMMENT '订单商品详情表';
+
+-- 退货订单表（新增状态、拒绝原因字段）
+CREATE TABLE `return_orders`
+(
+    `id`             BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '退货订单唯一标识符',
+    `order_id`       BIGINT NOT NULL COMMENT '关联的订单ID',
+    `product_id`     BIGINT NOT NULL COMMENT '退货商品ID',
+    `return_reason`  TEXT COMMENT '退货原因',
+    `return_status`  ENUM('待处理', '同意', '拒绝') DEFAULT '待处理' COMMENT '退货处理状态',
+    `reject_reason`  TEXT COMMENT '拒绝申请原因（仅当退货被拒绝时填写）',
+    `return_date`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '退货时间',
+    FOREIGN KEY (`order_id`) REFERENCES `order`(`id`) ON DELETE CASCADE
+) COMMENT '退货订单表，记录退货状态和拒绝原因';
 
 -- ==============================================
 --               4️⃣ 采购管理模块
@@ -134,16 +177,16 @@ CREATE TABLE `purchase_items`
 -- ==============================================
 --               5️⃣ 退货 & 损耗管理模块
 -- ==============================================
-
-CREATE TABLE `return_orders`
-(
-    `id`            BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '退货订单唯一标识符',
-    `order_id`      BIGINT NOT NULL COMMENT '关联的订单ID',
-    `product_id`    BIGINT NOT NULL COMMENT '退货商品ID',
-    `return_reason` TEXT COMMENT '退货原因',
-    `return_status` ENUM('待处理', '已完成') DEFAULT '待处理' COMMENT '退货处理状态',
-    `return_date`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '退货时间'
-) COMMENT '退货订单表';
+--
+-- CREATE TABLE `return_orders`
+-- (
+--     `id`            BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '退货订单唯一标识符',
+--     `order_id`      BIGINT NOT NULL COMMENT '关联的订单ID',
+--     `product_id`    BIGINT NOT NULL COMMENT '退货商品ID',
+--     `return_reason` TEXT COMMENT '退货原因',
+--     `return_status` ENUM('待处理', '已完成') DEFAULT '待处理' COMMENT '退货处理状态',
+--     `return_date`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '退货时间'
+-- ) COMMENT '退货订单表';
 
 CREATE TABLE `stock_adjustments`
 (

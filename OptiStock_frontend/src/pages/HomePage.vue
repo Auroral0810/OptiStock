@@ -36,10 +36,10 @@ const menuItems = [
       icon: Box,
       title: '采购管理',
       children: [
-        { index: '3-1', title: '采购计划', path: '/purchase/plan' },
-        { index: '3-2', title: '采购订单', path: '/purchase/order' },
-        { index: '3-3', title: '采购入库', path: '/purchase/stockin' },
-        { index: '3-4', title: '供应商管理', path: '/purchase/supplier' }
+        { index: '3-1', title: '采购订单', path: '/purchase/order' },
+        { index: '3-2', title: '供应商管理', path: '/purchase/supplier' },
+        // { index: '3-3', title: '采购入库', path: '/purchase/stockin' },
+        // { index: '3-4', title: '供应商管理', path: '/purchase/supplier' }
       ]
     },
     {
@@ -49,7 +49,7 @@ const menuItems = [
       children: [
         { index: '4-1', title: '订单管理', path: '/order/manage' },
         { index: '4-2', title: '订单出库', path: '/order/stockout' },
-        { index: '4-3', title: '退货与损耗', path: '/order/return' }
+        { index: '4-3', title: '退货管理', path: '/order/return' }
       ]
     },
     {

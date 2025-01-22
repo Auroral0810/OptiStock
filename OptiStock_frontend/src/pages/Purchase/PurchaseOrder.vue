@@ -57,7 +57,7 @@ const viewOrder = async (row) => {
 
 // 分页信息
 const currentPage = ref(1);
-const pageSize = ref(5);
+const pageSize = ref(10);
 const total = ref(20);
 
 // 查询订单
@@ -133,7 +133,7 @@ const exportOrders = () => {
 // 导出当前订单为Word
 const exportCurrentOrder = (order) => {
   // 读取XML模板
-  fetch('/src/assets/order.xml')
+  fetch('/src/assets/purchaseOrder.xml')
     .then(response => response.text())
     .then(template => {
       // 添加调试日志
