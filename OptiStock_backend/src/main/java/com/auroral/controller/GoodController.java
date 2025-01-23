@@ -19,6 +19,7 @@ public class GoodController {
 
     @Autowired
     private ProductService productService;
+
     @PostMapping("/getAllProductCategory")
     public ResponseResult getAllProductCategory(@RequestHeader("Authorization") String authHeader, @RequestBody PageRequestDTO pageRequestDTO) {
         //校验token看看是否有权限
@@ -117,6 +118,7 @@ public class GoodController {
             return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
         }
     }
+
     //获取SKU列表和分类列表
     @GetMapping("/getSkuAndCategoryList")
     public ResponseResult getSkuAndCategoryList(@RequestHeader("Authorization") String authHeader) {
@@ -136,6 +138,7 @@ public class GoodController {
             return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
         }
     }
+
     //获取商品列表
     @PostMapping("/getProductList")
     public ResponseResult getProductList(@RequestHeader("Authorization") String authHeader, @RequestBody ProductListDTO requestDTO) {
@@ -155,6 +158,7 @@ public class GoodController {
             return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
         }
     }
+
     //添加商品
     @PostMapping("/addProduct")
     public ResponseResult addProduct(@RequestHeader("Authorization") String authHeader, @RequestBody AddProductDTO addProductDTO) {
@@ -174,10 +178,11 @@ public class GoodController {
             return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
         }
     }
+
     //更新商品
     //格式：http://localhost:9092/product/updateProduct
     @PatchMapping("/updateProduct")
-    public ResponseResult updateProduct(@RequestHeader("Authorization") String authHeader,@RequestBody UpdateProductDTO updateProductDTO) {
+    public ResponseResult updateProduct(@RequestHeader("Authorization") String authHeader, @RequestBody UpdateProductDTO updateProductDTO) {
         //校验token看看是否有权限
         String token = authHeader.replace("Bearer ", "");
         Claims claims = null; // 解析 Token
@@ -194,6 +199,7 @@ public class GoodController {
             return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
         }
     }
+
     //删除商品
     //格式：http://localhost:9092`/product/deleteProduct?id=1
     @DeleteMapping("/deleteProduct")

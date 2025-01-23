@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class StockAdjustmentsServiceImpl extends ServiceImpl<StockAdjustmentsMap
     @Autowired
     private ProductMapper productMapper;
     @Override
+    @Transactional
     public ResponseResult adjustStock(AdjustStockDTO adjustStockDTO) {
         /*思路：
         * 1.解析DTO中的数据，获取调整的id和数量
@@ -53,6 +55,7 @@ public class StockAdjustmentsServiceImpl extends ServiceImpl<StockAdjustmentsMap
     }
 
     @Override
+    @Transactional
     public ResponseResult getStockAdjustRecord(Long id,String timeRange) {
         //1.根据id和时间范围查询adjustments表，timeRange的值为week、month、year，表示查询最近一周、一月、一年的调整记录
 

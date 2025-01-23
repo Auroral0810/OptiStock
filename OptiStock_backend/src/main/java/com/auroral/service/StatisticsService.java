@@ -3,6 +3,8 @@ package com.auroral.service;
 import com.auroral.dto.InventoryStatisticsDTO;
 import com.auroral.dto.PurchaseStatisticsDTO;
 import com.auroral.dto.SalesStatisticsDTO;
+import com.auroral.entity.ResponseResult;
+import com.auroral.vo.OverviewStatisticsVO;
 import com.auroral.vo.purchsaestatisticsVo.PurchaseStatisticsVO;
 import com.auroral.vo.salestatisticVo.SalesStatisticsVO;
 import com.auroral.vo.statisticsVo.InventoryStatisticsVO;
@@ -19,4 +21,11 @@ public interface StatisticsService {
     SalesStatisticsVO getSalesStatistics(SalesStatisticsDTO salesStatisticsDTO);
 
     PurchaseStatisticsVO getPurchaseStatistics(PurchaseStatisticsDTO purchaseStatisticsDTO);
+    /**
+     * 获取系统概览数据
+     * @return OverviewStatisticsVO
+     */
+    ResponseResult getOverviewStatistics();
+
+
 }

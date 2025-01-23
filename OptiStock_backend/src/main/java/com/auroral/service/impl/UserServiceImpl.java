@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -36,6 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private RedisCache redisCache;
 
     @Override
+    @Transactional
     public ResponseResult register(String username, String nickname, String password){
         //判断是否存在这个用户
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
@@ -57,6 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional
     public ResponseResult login(UserLoginDTO request) {
 
         String username = request.getUsername();
@@ -83,6 +86,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional
     public ResponseResult updateInfo(UserUpdateDTO request) {
         //已经通过了controller层的登录验证，所以这里不需要再验证token了
         User user = BeanCopyUtils.copyBean(request, User.class);
@@ -92,6 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional
     public ResponseResult changePassword(UserChangePwdDTO request) {
         //已经通过了controller层的登录验证，所以这里不需要再验证token了
         //先验证旧密码是否正确,根据id查询用户信息

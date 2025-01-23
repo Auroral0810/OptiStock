@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,7 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
     private PurchaseOrderMapper purchaseOrderMapper;
     //获取供应商信息列表
     @Override
+    @Transactional
     public ResponseResult getSupplierList(SupplierListDTO supplierListDTO) {
         /*1.根据条件查询供应商信息
          * 2.封装Vo对象
@@ -73,6 +75,7 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
     }
     //更新供应商信息
     @Override
+    @Transactional
     public ResponseResult updateSupplier(UpdateSupplierDTO updateSupplierDTO) {
         //根据供应商id查询是否存在
         Supplier supplier = getById(updateSupplierDTO.getId());
@@ -86,6 +89,7 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
     }
     //添加供应商信息
     @Override
+    @Transactional
     public ResponseResult addSupplier(AddSupplierDTO addSupplierDTO) {
         //根据供应商名称查询是否存在
         LambdaQueryWrapper<Supplier> queryWrapper = new LambdaQueryWrapper<>();
@@ -102,6 +106,7 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
 
     //删除供应商信息
     @Override
+    @Transactional
     public ResponseResult deleteSupplier(Long id) {
         //查询采购订单表是否存在当前供应商还未完成的订单
         LambdaQueryWrapper<PurchaseOrder> queryWrapper = new LambdaQueryWrapper<>();

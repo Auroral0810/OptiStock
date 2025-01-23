@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "c16513ed-8575-43e4-8e2e-ea268da21e76",
+		"name": "采购模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40953384"
+	},
+	"item": [
+		{
+			"name": "获取采购订单数据",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"pageNum\": 1,\n  \"pageSize\": 10,\n  \"filterForm\": {\n    \"supplierId\": \"\",\n    \"status\": \"\",\n    \"dateRange\": []\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/purchase/getPurchaseOrderList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"purchase",
+						"getPurchaseOrderList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增采购订单",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\":1,\n    \"supplierId\":1,\n    \"quantity\":1,\n    \"costPrice\":5000,\n    \"totalPrice\":5000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/purchase/addPurchaseOrder",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"purchase",
+						"addPurchaseOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "审核采购订单",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "7",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "已驳回",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9092/purchase/auditPurchaseOrder?id=7&status=已驳回",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"purchase",
+						"auditPurchaseOrder"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "7"
+						},
+						{
+							"key": "status",
+							"value": "已驳回"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除订单",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/purchase/getPurchaseOrderList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"purchase",
+						"getPurchaseOrderList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取供应商和商品分类数据",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/purchase/getSupplierAndProduct",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"purchase",
+						"getSupplierAndProduct"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.addHeader(\"Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI0NDZmZGM4MzA5ZDU0YWQ3YmQ3MTFlNjQ2ZTI5ZGYyMyIsInN1YiI6IjEwIiwiaXNzIjoieXlmIiwiaWF0IjoxNzM3NDczODc4LCJleHAiOjE3Mzc1NjAyNzh9.1jIiHKc41MffhqZ5SLqm7cat79HQGURHbko6XPEI0_0\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,10 +1,10 @@
 package com.auroral.dto;
 
 import lombok.Data;
-
-import java.util.Date;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class UpdateProductDTO {
     private Long id;
     //商品名称

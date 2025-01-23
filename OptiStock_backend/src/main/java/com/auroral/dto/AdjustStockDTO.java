@@ -14,6 +14,7 @@ import java.util.Date;
  * 库存调整请求 DTO
  */
 @Data
+@NoArgsConstructor
 public class AdjustStockDTO {
 
     @NotNull(message = "商品ID不能为空")

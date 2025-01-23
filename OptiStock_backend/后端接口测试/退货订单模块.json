@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "725da46f-370a-44ba-b8f9-0603da3187b5",
+		"name": "退货订单模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40953384"
+	},
+	"item": [
+		{
+			"name": "获取退货订单数据",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"pageNum\": 1,\n  \"pageSize\": 10,\n  \"filterForm\": {\n    \"orderNumber\": \"OT\",\n    \"productName\":\"\",\n    \"returnStatus\": \"\",\n    \"dateRange\": []\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/returnorder/getReturnOrderList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"returnorder",
+						"getReturnOrderList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.addHeader(\"Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI0NDZmZGM4MzA5ZDU0YWQ3YmQ3MTFlNjQ2ZTI5ZGYyMyIsInN1YiI6IjEwIiwiaXNzIjoieXlmIiwiaWF0IjoxNzM3NDczODc4LCJleHAiOjE3Mzc1NjAyNzh9.1jIiHKc41MffhqZ5SLqm7cat79HQGURHbko6XPEI0_0\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

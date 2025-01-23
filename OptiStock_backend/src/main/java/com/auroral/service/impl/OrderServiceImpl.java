@@ -42,6 +42,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private StockOutService stockOutService;
     @Override
+    @Transactional(readOnly = true)
     public ResponseResult getOrderList(OrderListDTO orderListDTO) {
         // 1. 解析查询的条件参数
         Integer pageNum = (orderListDTO.getPageNum() != null) ? orderListDTO.getPageNum() : 1;
@@ -207,6 +208,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     //获取商品名称
     @Override
+    @Transactional
     public ResponseResult getProductName() {
         List<ProductNameVo.ProductInfo> productNameList = productMapper.getProductName();
         ProductNameVo productNameVo = new ProductNameVo();

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { Setting, Tools, DataAnalysis, Document, TrendCharts, Goods, Warning, Money, List } from '@element-plus/icons-vue'
 import { getDashboardData } from '@/api/statistics'
 import gsap from 'gsap'
@@ -92,12 +92,47 @@ const reloadAnimations = () => {
   animateNumbers()
 }
 
+let intervalId = null
+
+// 页面可见性变化处理函数
+const handleVisibilityChange = () => {
+  if (document.hidden) {
+    // 页面不可见时清除定时器
+    if (intervalId) {
+      clearInterval(intervalId)
+      intervalId = null
+    }
+  } else {
+    // 页面可见时重新启动定时器
+    loadDashboardData()
+    reloadAnimations()
+    intervalId = setInterval(() => {
+      loadDashboardData()
+      reloadAnimations()
+    }, 15000)
+  }
+}
+
 onMounted(() => {
   loadDashboardData()
   reloadAnimations()
   
-  // 每15秒重新加载一次动画
-  setInterval(() => {loadDashboardData(); reloadAnimations()}, 15000)
+  // 添加页面可见性变化监听
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+  
+  // 初始启动定时器
+  intervalId = setInterval(() => {
+    loadDashboardData()
+    reloadAnimations()
+  }, 15000)
+})
+
+onUnmounted(() => {
+  // 组件卸载时清理
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
+  if (intervalId) {
+    clearInterval(intervalId)
+  }
 })
 
 // 后端获取数据

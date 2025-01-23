@@ -1,0 +1,118 @@
+{
+	"info": {
+		"_postman_id": "394f536e-2762-4789-864e-88636a14aa53",
+		"name": "可视化模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40953384"
+	},
+	"item": [
+		{
+			"name": "获取库存可视化信息",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"startDate\": \"2023-01-01\",\n  \"endDate\": \"2023-12-31\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/inventory/getStatistics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"inventory",
+						"getStatistics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取订单可视化信息",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"startDate\": \"2024-12-31\",\n  \"endDate\": \"\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/statistics/getSalesStatistics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"statistics",
+						"getSalesStatistics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取采购可视化信息",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/inventory/getStatistics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"inventory",
+						"getStatistics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.addHeader(\"Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3ZjM0NWM5Njk1NzI0NjMxYTg1ODMwOGE2NjM0NmM1YiIsInN1YiI6IjEwIiwiaXNzIjoieXlmIiwiaWF0IjoxNzM3NTYzNDc5LCJleHAiOjE3Mzc2NDk4Nzl9.jKEOPgHUdvayfH1FNiCyBSOoi8DN3FKfWqbwNKSrZhY\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

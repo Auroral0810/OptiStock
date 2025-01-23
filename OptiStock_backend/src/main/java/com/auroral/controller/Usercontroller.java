@@ -10,10 +10,12 @@ import com.auroral.service.UserService;
 import com.auroral.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 @Validated
@@ -35,7 +37,7 @@ public class Usercontroller {
 
     //更新用户信息
     @PostMapping("/updateInfo")
-    public ResponseResult update(@RequestHeader("Authorization") String authHeader,@RequestBody @Valid UserUpdateDTO request) {
+    public ResponseResult update(@RequestHeader("Authorization") String authHeader, @RequestBody @Valid UserUpdateDTO request) {
         // 解析 Token，获取 UserId
         String token = authHeader.replace("Bearer ", "");
         Claims claims = null; // 解析 Token
@@ -51,7 +53,8 @@ public class Usercontroller {
             request.setId(Long.parseLong(userId));
             return userService.updateInfo(request);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
 
@@ -73,7 +76,8 @@ public class Usercontroller {
             request.setId(Long.parseLong(userId));
             return userService.changePassword(request);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
 

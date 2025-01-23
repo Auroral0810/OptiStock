@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "3ea3d988-ca79-400f-b578-c12e77281343",
+		"name": "供应商模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40953384"
+	},
+	"item": [
+		{
+			"name": "获取供应商信息列表",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n    \"pageNum\": 1,     \n    \"pageSize\": 5,     \n    \"filterForm\": \n        {\n            \"name\": \"\",\n            \"phone\":\"\",          \n            \"coontact\": \"\"     \n        }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/supplier/getSupplierList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"supplier",
+						"getSupplierList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增供应商",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"苹果韩国\",\n    \"contact\": \"俞先生\",\n    \"phone\": \"15968588744\",\n    \"email\": \"12345567@china.com\",\n    \"address\": \"浙江绍兴\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/supplier/addSupplier",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"supplier",
+						"addSupplier"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新供应商信息",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"name\": \"苹果中国\",\n    \"contact\": \"王先生\",\n    \"phone\": \"13800000001\",\n    \"email\": \"apple@china.com\",\n    \"address\": \"北京中关村\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/supplier/updateSupplier",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"supplier",
+						"updateSupplier"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除供应商",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/supplier/deleteSupplier?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"supplier",
+						"deleteSupplier"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.addHeader(\"Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjZjBlNWY1MzNkMzY0MzcyYmNkNDcyNjY1NGNkN2Y4YiIsInN1YiI6IjEwIiwiaXNzIjoieXlmIiwiaWF0IjoxNzM3NDM4MDQ2LCJleHAiOjE3Mzc1MjQ0NDZ9.IjwmlsmQGMFSs-3mvF2Crvg2GTxQ2p2--8Srfp0M6Pg\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

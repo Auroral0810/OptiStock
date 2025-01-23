@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +51,7 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
     @Autowired
     private PurchaseItemsService purchaseItemsService;
     @Override
+    @Transactional
     public ResponseResult getPurchaseOrderList(PurchaseOrderListDTO purchaseOrderListDTO) {
         // 1. 解析查询的条件参数
         Integer pageNum = (purchaseOrderListDTO.getPageNum() != null) ? purchaseOrderListDTO.getPageNum() : 1;
@@ -90,6 +92,7 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
     }
     // 实现删除采购订单
     @Override
+    @Transactional
     public ResponseResult deletePurchaseOrder(String id) {
         //判断当前采购订单状态是否是待审核或者已驳回状态
         PurchaseOrder purchaseOrder = getById(id);
@@ -108,6 +111,7 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
     //实现新增采购订单
 
     @Override
+    @Transactional
     public ResponseResult addPurchaseOrder(AddPurchaseOrderDTO addPurchaseOrderDTO) {
         // 1. 解析参数
         Long productId = addPurchaseOrderDTO.getProductId();
@@ -161,6 +165,7 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
 
     //审核采购订单
     @Override
+    @Transactional
     public ResponseResult auditPurchaseOrder(Long id, String status) {
         //修改采购订单状态,判断是否是待审核状态
         //判断当前采购订单状态是否是待审核或者已驳回状态
@@ -176,6 +181,7 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
     //返回供应商名称和商品名称
 
     @Override
+    @Transactional
     public ResponseResult getSupplierAndProduct() {
         // 1. 查询商品的名称和ID
         List<SupplierAndProductVo.ProductInfo> productList = productMapper.getAllProducts()

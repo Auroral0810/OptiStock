@@ -4,45 +4,44 @@
 <mapper namespace="com.auroral.mapper.OrderMapper">
 
     <select id="getOrderList" resultType="com.auroral.vo.OrderListVo">
-        WITH filtered_orders AS (
-            SELECT
-                o.order_number,
-                o.customer_name,
-                o.platform,
-                o.phone,
-                o.address,
-                o.total_amount,
-                o.status,
-                o.created_at,
-                oi.product_id,
-                oi.quantity,
-                oi.price,
-                oi.total_price
-            FROM `order` o
-                     LEFT JOIN order_items oi ON o.id = oi.order_id
-            WHERE
-                (#{keyword} IS NULL OR o.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                    OR oi.product_id IN (SELECT id FROM product WHERE name LIKE CONCAT('%', #{keyword}, '%')))
-              AND (#{status} IS NULL OR o.status = #{status})
-              AND (#{platform} IS NULL OR o.platform = #{platform})
-              AND o.created_at BETWEEN #{startDate} AND #{endDate}
-        )
         SELECT
-            fo.order_number AS orderNumber,
-            fo.customer_name AS customerName,
-            fo.platform AS platform,
-            fo.phone AS phone,
-            fo.address AS address,
-            fo.total_amount AS totalAmount,
-            fo.status AS status,
+            filtered_orders.order_number AS orderNumber,
+            filtered_orders.customer_name AS customerName,
+            filtered_orders.platform AS platform,
+            filtered_orders.phone AS phone,
+            filtered_orders.address AS address,
+            filtered_orders.total_amount AS totalAmount,
+            filtered_orders.status AS status,
             p.name AS productName,
-            fo.quantity AS quantity,
-            fo.price AS price,
-            fo.total_price AS totalPrice,
-            fo.created_at AS createdAt
-        FROM filtered_orders fo
-                 JOIN product p ON fo.product_id = p.id
-        ORDER BY fo.created_at DESC
+            filtered_orders.quantity AS quantity,
+            filtered_orders.price AS price,
+            filtered_orders.total_price AS totalPrice,
+            filtered_orders.created_at AS createdAt
+        FROM (
+                 SELECT
+                     o.order_number,
+                     o.customer_name,
+                     o.platform,
+                     o.phone,
+                     o.address,
+                     o.total_amount,
+                     o.status,
+                     o.created_at,
+                     oi.product_id,
+                     oi.quantity,
+                     oi.price,
+                     oi.total_price
+                 FROM `order` o
+                          LEFT JOIN order_items oi ON o.id = oi.order_id
+                 WHERE
+                     (#{keyword} IS NULL OR o.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                         OR oi.product_id IN (SELECT id FROM product WHERE name LIKE CONCAT('%', #{keyword}, '%')))
+                   AND (#{status} IS NULL OR o.status = #{status})
+                   AND (#{platform} IS NULL OR o.platform = #{platform})
+                   AND o.created_at BETWEEN #{startDate} AND #{endDate}
+             ) AS filtered_orders
+                 JOIN product p ON filtered_orders.product_id = p.id
+        ORDER BY filtered_orders.created_at DESC
     </select>
 
 </mapper>

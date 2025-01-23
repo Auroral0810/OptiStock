@@ -46,28 +46,38 @@ const rules = {
   ]
 }
 
+const loginFormRef = ref(null)
+
 // 处理注册
 const handleRegister = async () => {
-    const res = await userRegister(form.username, form.nickname, form.password)
-    if (res.code === 200) {
-      ElMessage.success('注册成功')
-      isRegister.value = false
+  await loginFormRef.value.validate(async (valid) => {
+    if (valid) {
+      const res = await userRegister(form.username, form.nickname, form.password)
+      if (res.code === 200) {
+        ElMessage.success('注册成功')
+        isRegister.value = false
+      }
     }
-
+  })
 }
+
 import { useAuthStore } from '@/utils/auth'
 
 const authStore = useAuthStore()
 // 处理登录
 const handleLogin = async () => {
-    const res = await userLogin(form.username, form.password)
-    if (res.code === 200) {
-      ElMessage.success('登录成功')
-      console.log(res.data.token)
-    // 存储 Token 和用户信息到 Pinia + LocalStorage
-    authStore.login(res.data.token, res.data.userInfo)
-      await router.push('/homepage/default')
+  await loginFormRef.value.validate(async (valid) => {
+    if (valid) {
+      const res = await userLogin(form.username, form.password)
+      if (res.code === 200) {
+        ElMessage.success('登录成功')
+        console.log(res.data.token)
+        // 存储 Token 和用户信息到 Pinia + LocalStorage
+        authStore.login(res.data.token, res.data.userInfo)
+        await router.push('/homepage/default')
+      }
     }
+  })
 }
 
 // 处理找回密码
@@ -94,7 +104,7 @@ const handleThirdPartyLogin = (type) => {
         <h2 class="login-title">{{ isRegister ? '用户注册' : '欢迎登录' }}</h2>
       </div>
 
-      <el-form :model="form" :rules="rules" class="login-form" label-width="0">
+      <el-form ref="loginFormRef" :model="form" :rules="rules" class="login-form" label-width="0">
         <el-form-item prop="username">
           <el-input
             v-model="form.username"

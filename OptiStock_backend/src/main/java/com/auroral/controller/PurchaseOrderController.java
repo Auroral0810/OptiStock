@@ -7,9 +7,11 @@ import com.auroral.enums.AppHttpCodeEnum;
 import com.auroral.service.PurchaseOrderService;
 import com.auroral.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/purchase")
 public class PurchaseOrderController {
@@ -31,7 +33,8 @@ public class PurchaseOrderController {
             }
             return purchaseOrderService.getPurchaseOrderList(purchaseOrderListDTO);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("获取采购订单列表出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
 
@@ -51,9 +54,11 @@ public class PurchaseOrderController {
             }
             return purchaseOrderService.deletePurchaseOrder(id);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
+
     //新增采购订单
     @PutMapping("/addPurchaseOrder")
     public ResponseResult addPurchaseOrder(@RequestHeader("Authorization") String authHeader, @RequestBody AddPurchaseOrderDTO addPurchaseOrderDTO) {
@@ -70,9 +75,11 @@ public class PurchaseOrderController {
             }
             return purchaseOrderService.addPurchaseOrder(addPurchaseOrderDTO);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
+
     //审核采购订单
     @PatchMapping("/auditPurchaseOrder")
     public ResponseResult auditPurchaseOrder(@RequestHeader("Authorization") String authHeader, @RequestParam("id") Long id, @RequestParam("status") String status) {
@@ -87,11 +94,13 @@ public class PurchaseOrderController {
                 //无权限
                 return ResponseResult.errorResult(AppHttpCodeEnum.NO_OPERATOR_AUTH);
             }
-            return purchaseOrderService.auditPurchaseOrder(id,status);
+            return purchaseOrderService.auditPurchaseOrder(id, status);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
+
     //返回供应商名称和商品名称
     @GetMapping("/getSupplierAndProduct")
     public ResponseResult getSupplierAndProduct(@RequestHeader("Authorization") String authHeader) {
@@ -108,7 +117,8 @@ public class PurchaseOrderController {
             }
             return purchaseOrderService.getSupplierAndProduct();
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
 }

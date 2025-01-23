@@ -2,8 +2,10 @@ package com.auroral.dto;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class AddPurchaseOrderDTO {
     //商品id
     private Long productId;

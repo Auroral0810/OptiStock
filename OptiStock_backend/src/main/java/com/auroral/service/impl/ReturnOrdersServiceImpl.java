@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +40,7 @@ public class ReturnOrdersServiceImpl extends ServiceImpl<ReturnOrdersMapper, Ret
     @Autowired
     private ProductMapper productMapper;
     @Override
+    @Transactional
     public ResponseResult getReturnOrderList(ReturnOrderListDTO returnOrderListDTO) {
         // 1. 解析查询条件参数
         Integer pageNum = returnOrderListDTO.getPageNum() != null ? returnOrderListDTO.getPageNum() : 1;
@@ -77,6 +79,7 @@ public class ReturnOrdersServiceImpl extends ServiceImpl<ReturnOrdersMapper, Ret
 
     //审核订单
     @Override
+    @Transactional
     public ResponseResult handleReturnOrder(HandleReturnOrderDTO handleReturnOrderDTO) {
         // 1. 查询退货订单
         ReturnOrders returnOrder = returnOrdersMapper.selectById(handleReturnOrderDTO.getId());
@@ -122,6 +125,7 @@ public class ReturnOrdersServiceImpl extends ServiceImpl<ReturnOrdersMapper, Ret
     //删除退货订单
 
     @Override
+    @Transactional
     public ResponseResult deleteReturnOrder(String id) {
         //1.根据id查询退货订单
         ReturnOrders returnOrder = returnOrdersMapper.selectById(id);

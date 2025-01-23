@@ -575,4 +575,31 @@ public interface StatisticsMapper {
     // 获取最晚的 created_at 日期
     @Select("SELECT DATE_FORMAT(MAX(created_at), '%Y-%m-%d') FROM purchase_order")
     String getMaxCreatedAt();
+    /**
+     * 获取状态为“上架”的商品总数
+     */
+    @Select("SELECT COUNT(*) FROM `product` WHERE `status` = '上架'")
+    int getProductCount();
+
+    /**
+     * 获取状态为“上架”且库存数量小于预警阈值的商品数量
+     */
+    @Select("SELECT COUNT(*) FROM `product` WHERE `status` = '上架' AND `stock_quantity` < `warning_threshold`")
+    int getWarningProductCount();
+
+    /**
+     * 获取状态不为“已取消”和“待付款”的订单数量
+     */
+    @Select("SELECT COUNT(*) FROM `order` WHERE `status` NOT IN ('已取消', '待付款')")
+    int getOrderCount();
+
+    /**
+     * 获取过去一个月内，状态不为“已取消”和“待付款”的订单的总金额
+     * @param startDate 起始日期（格式：yyyy-MM-dd）
+     * @param endDate 结束日期（格式：yyyy-MM-dd）
+     */
+    @Select("SELECT IFNULL(SUM(`total_amount`), 0) FROM `order` " +
+            "WHERE `status` NOT IN ('已取消', '待付款') " +
+            "AND `created_at` BETWEEN #{startDate} AND #{endDate}")
+    BigDecimal getMonthlyRevenue(@Param("startDate") String startDate, @Param("endDate") String endDate);
 }

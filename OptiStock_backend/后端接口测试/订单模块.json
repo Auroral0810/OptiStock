@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "6216d27d-40d8-488c-98d1-338e6d48cb57",
+		"name": "订单模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40953384"
+	},
+	"item": [
+		{
+			"name": "获取订单详细数据",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"pageNum\": 1,\n  \"pageSize\": 10,\n  \"filterForm\": {\n    \"keyword\": \"\",\n    \"status\": \"\",\n    \"platform\":\"\",\n    \"dateRange\": []\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/order/getOrderList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"order",
+						"getOrderList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "修改订单数据",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerName\": \"俞云烽\",\n  \"phone\": \"15968588744\",\n  \"address\": \"江苏南京\",\n  \"orderNumber\": \"OPT202501221938387441\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/order/updateOrder",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"order",
+						"updateOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增订单数据",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"productId\":2,\n\"productName\":\"MacBook Pro\",\n\"price\":12999,\n\"quantity\":4,\n\"totalPrice\":51996,\n\"customerName\":\"俞云烽\",\n\"platform\":\"淘宝\",\n\"phone\":\"15968588744\",\n\"address\":\"南京市建邺区\",\n\"stockQuantity\":29,\n\"orderId\":\"OPT202501221859287444\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/order/addOrder",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"order",
+						"addOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除订单",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/order/deleteOrder?orderNumber=ORD20230107",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"order",
+						"deleteOrder"
+					],
+					"query": [
+						{
+							"key": "orderNumber",
+							"value": "ORD20230107"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "订单发货",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/order/changeOrderStatus?orderNumber=ORD20230101",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"order",
+						"changeOrderStatus"
+					],
+					"query": [
+						{
+							"key": "orderNumber",
+							"value": "ORD20230101"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取商品列表",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/order/getProductName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"order",
+						"getProductName"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.addHeader(\"Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI0NDZmZGM4MzA5ZDU0YWQ3YmQ3MTFlNjQ2ZTI5ZGYyMyIsInN1YiI6IjEwIiwiaXNzIjoieXlmIiwiaWF0IjoxNzM3NDczODc4LCJleHAiOjE3Mzc1NjAyNzh9.1jIiHKc41MffhqZ5SLqm7cat79HQGURHbko6XPEI0_0\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

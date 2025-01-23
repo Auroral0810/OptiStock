@@ -1,8 +1,10 @@
 package com.auroral.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class AddCategoryDTO {
     //分类名称
     private String name;

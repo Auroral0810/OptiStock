@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "16f91d8a-0720-46de-8817-3ca9a98819a2",
+		"name": "库存模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40953384"
+	},
+	"item": [
+		{
+			"name": "获取库存信息",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n    \"pageNum\": 1,     \n    \"pageSize\": 5,     \n    \"filterForm\": \n        {\n            \"name\": \"\",          \n            \"sku\": \"\"     \n        }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/stock/getStockList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"stock",
+						"getStockList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "调整库存信息",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": 1,\n    \"name\": \"iPhone 14\",\n    \"sku\": \"IP14-001\",\n    \"currentStock\": 48,\n    \"quantity\": 2,\n    \"adjustmentType\": \"损坏\",\n    \"remarks\": \"测试调整\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/stock/adjustStock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"stock",
+						"adjustStock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "查看库存调整记录",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/stock/getStockAdjustRecord?id=1&timeRange=week",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"stock",
+						"getStockAdjustRecord"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						},
+						{
+							"key": "timeRange",
+							"value": "week"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取阈值数据",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n    \"pageNum\": 1,     \n    \"pageSize\": 5,     \n    \"filterForm\": \n        {\n            \"name\": \"\",          \n            \"sku\": \"\"     \n        }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/stock/getThresholdDataList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"stock",
+						"getThresholdDataList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新阈值",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":5,\n    \"newThreshold\":10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/stock/updateThreshold",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"stock",
+						"updateThreshold"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.addHeader(\"Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjZjBlNWY1MzNkMzY0MzcyYmNkNDcyNjY1NGNkN2Y4YiIsInN1YiI6IjEwIiwiaXNzIjoieXlmIiwiaWF0IjoxNzM3NDM4MDQ2LCJleHAiOjE3Mzc1MjQ0NDZ9.IjwmlsmQGMFSs-3mvF2Crvg2GTxQ2p2--8Srfp0M6Pg\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -4,7 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import lombok.NoArgsConstructor;
+
 @Data
+@NoArgsConstructor
 public class UserRegisterDTO {
 
     @NotBlank(message = "用户名不能为空")

@@ -3,6 +3,7 @@ package com.auroral.service.impl;
 import com.auroral.dto.InventoryStatisticsDTO;
 import com.auroral.dto.PurchaseStatisticsDTO;
 import com.auroral.dto.SalesStatisticsDTO;
+import com.auroral.entity.ResponseResult;
 import com.auroral.mapper.StatisticsMapper;
 import com.auroral.service.StatisticsService;
 import com.auroral.vo.*;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -278,4 +280,46 @@ public class StatisticsServiceImpl implements StatisticsService {
         return vo;
     }
 
+
+    //首页概览数据
+    @Override
+    public ResponseResult getOverviewStatistics() {
+        //1，获取总商品数和预警商品数量。即返回product表中，status=“上架”的数量商品信息list集合。
+        //2.判断每一件其库存数量是否小于库存预警范围内，如果是则预警数量+1。
+
+        //3.查询order表中，status=“已完成”的订单信息list集合。
+        //4.判读其时间是否在最近一个月时间内，如果是就在月度营收额变量中累加其金额。
+        //5.封装VO
+        //6.返回结果
+        OverviewStatisticsVO vo = new OverviewStatisticsVO();
+
+        // 获取当前日期和上一个月的日期范围
+        LocalDate today = LocalDate.now();
+        YearMonth currentMonth = YearMonth.from(today);
+        YearMonth lastMonth = currentMonth.minusMonths(1);
+
+        String currentStartDate = currentMonth.atDay(1).toString();      // e.g., 2023-04-01
+        String currentEndDate = currentMonth.atEndOfMonth().toString();   // e.g., 2023-04-30
+
+        String lastStartDate = lastMonth.atDay(1).toString();            // e.g., 2023-03-01
+        String lastEndDate = lastMonth.atEndOfMonth().toString();         // e.g., 2023-03-31
+
+        // 1. 获取商品总数
+        int productCount = statisticsMapper.getProductCount();
+        vo.setProductCount(productCount);
+
+        // 2. 获取预警商品数量
+        int warningProductCount = statisticsMapper.getWarningProductCount();
+        vo.setWarningProductCount(warningProductCount);
+
+        // 3. 获取订单数量（状态不为“已取消”和“待付款”）
+        int orderCount = statisticsMapper.getOrderCount();
+        vo.setOrderCount(orderCount);
+
+        // 4. 获取月度营收额（过去一个月内，状态不为“已取消”和“待付款”的订单总金额）
+        BigDecimal monthlyRevenue = statisticsMapper.getMonthlyRevenue(currentStartDate, currentEndDate);
+        vo.setMonthlyRevenue(monthlyRevenue);
+
+        return ResponseResult.okResult(vo);
+    }
 }

@@ -3,8 +3,10 @@ package com.auroral.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class UserUpdateDTO {
 
     @NotBlank(message = "昵称不能为空")

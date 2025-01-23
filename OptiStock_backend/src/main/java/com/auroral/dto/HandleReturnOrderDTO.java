@@ -4,8 +4,10 @@ import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class HandleReturnOrderDTO {
     @NotNull(message = "退货订单ID不能为空")
     private Long id;

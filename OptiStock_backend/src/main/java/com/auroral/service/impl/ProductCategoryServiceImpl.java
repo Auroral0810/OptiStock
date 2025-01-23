@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
     private ProductCategoryMapper productCategoryMapper;
 
     @Override
+    @Transactional
     public ResponseResult getAllProductCategory(PageRequestDTO pageRequestDTO) {
         // 获取参数
         Integer pageNum = pageRequestDTO.getPageNum();
@@ -91,6 +93,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
     //获取父类名称
 
     @Override
+    @Transactional
     public ResponseResult getParentCategoty() {
         LambdaQueryWrapper<ProductCategory> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.isNull(ProductCategory::getParentId);
@@ -103,6 +106,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
     //新增商品分类
 
     @Override
+    @Transactional
     public ResponseResult addCategory(AddCategoryDTO addCategoryDTO) {
         //判断分类是否存在
         LambdaQueryWrapper<ProductCategory> queryWrapper = new LambdaQueryWrapper<>();
@@ -121,6 +125,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
     //删除商品分类
 
     @Override
+    @Transactional
     public ResponseResult deleteCategory(Long id) {
         //判断分类是否存在
         ProductCategory category = getById(id);
@@ -142,6 +147,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
 
     //更新商品分类
     @Override
+    @Transactional
     public ResponseResult updateCategory(UpdateCategoryDTO updateCategoryDTO) {
         //判断分类是否存在
         LambdaQueryWrapper<ProductCategory> queryWrapper = new LambdaQueryWrapper<>();

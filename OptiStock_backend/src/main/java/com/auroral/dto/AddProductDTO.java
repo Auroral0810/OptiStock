@@ -1,10 +1,12 @@
 package com.auroral.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 public class AddProductDTO {
     //商品名称
     private String name;

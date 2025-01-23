@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     //返回商品SKU和分类列表
     @Override
+    @Transactional
     public ResponseResult getSkuAndCategoryList() {
         /*
          * 1. 查询商品列表找到不同的Sku值
@@ -68,6 +70,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     //返回商品信息
     @Override
+    @Transactional
     public ResponseResult getProductList(ProductListDTO requestDTO) {
         Integer currentPage = requestDTO.getPageNum() != null ? requestDTO.getPageNum() : 1;
         Integer pageSize = requestDTO.getPageSize() != null ? requestDTO.getPageSize() : 10;
@@ -122,6 +125,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     //添加商品信息
     @Override
+    @Transactional
     public ResponseResult addProduct(AddProductDTO addProductDTO) {
         /*
          * 1.查询是否有相同的商品名称
@@ -147,6 +151,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     //删除商品信息
     @Override
+    @Transactional
     public ResponseResult deleteProduct(Long id) {
         /*1，判断商品的库存是否为0
          * 2.如果库存为0，则删除商品信息
@@ -174,6 +179,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     //获取库存记录
     @Override
+    @Transactional
     public ResponseResult getStockList(StockListDTO stockListDTO) {
         /*1.根据条件查询商品信息
          * 2.封装Vo对象
@@ -216,6 +222,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     //获取阈值数据
 
     @Override
+    @Transactional
     public ResponseResult getThresholdDataList(StockListDTO stockListDTO) {
         /*1.根据条件查询商品信息
          * 2.封装Vo对象
@@ -249,6 +256,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     //更新阈值
 
     @Override
+    @Transactional
     public ResponseResult updateThreshold(Map<String, Object> requestData) {
         /*1.获取参数
          * 2.根据商品ID更新阈值

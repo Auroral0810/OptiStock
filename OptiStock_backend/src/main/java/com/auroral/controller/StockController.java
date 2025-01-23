@@ -8,12 +8,14 @@ import com.auroral.service.ProductService;
 import com.auroral.service.StockAdjustmentsService;
 import com.auroral.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/stock")
 @Validated
@@ -23,8 +25,9 @@ public class StockController {
 
     @Autowired
     private StockAdjustmentsService stockAdjustmentsService;
+
     @PostMapping("/getStockList")
-    public ResponseResult getStockList(@RequestHeader("Authorization") String authHeader, @RequestBody StockListDTO stockListDTO){
+    public ResponseResult getStockList(@RequestHeader("Authorization") String authHeader, @RequestBody StockListDTO stockListDTO) {
         //校验token看看是否有权限
         String token = authHeader.replace("Bearer ", "");
         Claims claims = null; // 解析 Token
@@ -38,12 +41,14 @@ public class StockController {
             }
             return productService.getStockList(stockListDTO);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
+
     //调整库存
     @PutMapping("/adjustStock")
-    public ResponseResult adjustStock(@RequestHeader("Authorization") String authHeader, @RequestBody AdjustStockDTO adjustStockDTO){
+    public ResponseResult adjustStock(@RequestHeader("Authorization") String authHeader, @RequestBody AdjustStockDTO adjustStockDTO) {
         //校验token看看是否有权限
         String token = authHeader.replace("Bearer ", "");
         Claims claims = null; // 解析 Token
@@ -57,9 +62,11 @@ public class StockController {
             }
             return stockAdjustmentsService.adjustStock(adjustStockDTO);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
+
     //获取对应id的调整记录,以及搜索条件（）
 //    http://localhost:9092/stock/getStockAdjustRecord?id=1&timeRange=week
     @GetMapping("/getStockAdjustRecord")
@@ -75,14 +82,16 @@ public class StockController {
                 //无权限
                 return ResponseResult.errorResult(AppHttpCodeEnum.NO_OPERATOR_AUTH);
             }
-            return stockAdjustmentsService.getStockAdjustRecord(id,timeRange);
+            return stockAdjustmentsService.getStockAdjustRecord(id, timeRange);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
+
     //获取阈值数据
     @PostMapping("/getThresholdDataList")
-    public ResponseResult getThresholdDataList(@RequestHeader("Authorization") String authHeader, @RequestBody StockListDTO stockListDTO){
+    public ResponseResult getThresholdDataList(@RequestHeader("Authorization") String authHeader, @RequestBody StockListDTO stockListDTO) {
         //校验token看看是否有权限
         String token = authHeader.replace("Bearer ", "");
         Claims claims = null; // 解析 Token
@@ -96,12 +105,14 @@ public class StockController {
             }
             return productService.getThresholdDataList(stockListDTO);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
+
     //更新阈值
     @PatchMapping("/updateThreshold")
-    public ResponseResult updateThreshold(@RequestHeader("Authorization") String authHeader, @RequestBody Map<String, Object> requestData){
+    public ResponseResult updateThreshold(@RequestHeader("Authorization") String authHeader, @RequestBody Map<String, Object> requestData) {
         //校验token看看是否有权限
         String token = authHeader.replace("Bearer ", "");
         Claims claims = null; // 解析 Token
@@ -115,7 +126,8 @@ public class StockController {
             }
             return productService.updateThreshold(requestData);
         } catch (Exception e) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_EXPIRED);
+            log.error("出错", e);
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
         }
     }
 }

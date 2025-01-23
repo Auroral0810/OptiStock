@@ -1,0 +1,298 @@
+{
+	"info": {
+		"_postman_id": "703a86c3-2c86-4afe-875b-c0f132544e13",
+		"name": "商品模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40953384"
+	},
+	"item": [
+		{
+			"name": "查询上级分类名称",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/product/getParentCategoty",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"getParentCategoty"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取商品分类数据",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"pageNum\":1,\n    \"pageSize\":5,\n    \"categoryName\": \"电子器件\",\n    \"parentId\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/product/getAllProductCategory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"getAllProductCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "添加分类",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"纸巾1\",\n    \"parentId\":\"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/product/addCategory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"addCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除分类",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/product/deleteCategory?id=9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"deleteCategory"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新分类信息",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n    \"id\": \"1\",\n    \"name\": \"电子器件\",\n    \"parentId\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/product/updateCategoryInfo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"updateCategoryInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取商品信息",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n    \"pageNum\": 1,     \n    \"pageSize\": 5,     \n    \"filterForm\": \n        {\n            \"name\": \"\",        \n            \"categoryName\": \"\",         \n            \"status\": \"\",         \n            \"sku\": \"\"     \n        }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/product/getProductList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"getProductList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取SKU和商品分类",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/product/getSkuAndCategoryList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"getSkuAndCategoryList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "添加商品",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"\",\n  \"name\": \"鞋子\",\n  \"categoryId\": \"\",\n  \"categoryName\": \"电子器件\",\n  \"sku\": \"IP14-0011\",\n  \"price\": 200,\n  \"costPrice\": 150,\n  \"unit\": \"件\",\n  \"status\": \"上架\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/product/addProduct",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"addProduct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除商品",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9092/product/deleteProduct?id=7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"deleteProduct"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新商品",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"13\",\n  \"name\": \"鞋子\",\n  \"categoryId\": \"\",\n  \"categoryName\": \"电子器件\",\n  \"sku\": \"IP14-0011\",\n  \"price\": 200,\n  \"costPrice\": 150,\n  \"unit\": \"件\",\n  \"status\": \"上架\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9092/product/updateProduct",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"product",
+						"updateProduct"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.addHeader(\"Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlZWRlMmE3MWNiMWY0NmQ3YmU3YmNmY2U1YmVhNjg1ZSIsInN1YiI6IjEwIiwiaXNzIjoieXlmIiwiaWF0IjoxNzM3MzQ5ODIxLCJleHAiOjE3Mzc0MzYyMjF9.G5uPFPS9NK2gKpTmb-7eQ5Yazn6FINU93P3vP4paAGw\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

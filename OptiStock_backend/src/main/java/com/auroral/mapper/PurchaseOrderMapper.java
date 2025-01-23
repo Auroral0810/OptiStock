@@ -16,12 +16,6 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface PurchaseOrderMapper extends BaseMapper<PurchaseOrder> {
     @Select("""
-    WITH filtered_orders AS (
-        SELECT id, supplier_id, total_cost, status, created_at
-        FROM purchase_order
-        WHERE (#{status} IS NULL OR status = #{status})
-          AND created_at BETWEEN #{startDate} AND #{endDate}
-    )
     SELECT 
         fo.id AS orderId, 
         p.name AS productName, 
@@ -35,11 +29,16 @@ public interface PurchaseOrderMapper extends BaseMapper<PurchaseOrder> {
         s.phone AS phone,           -- 供应商联系电话
         s.email AS email,           -- 供应商电子邮件
         s.address AS address        -- 供应商地址
-    FROM filtered_orders fo
+    FROM (
+        SELECT id, supplier_id, total_cost, status, created_at
+        FROM purchase_order
+        WHERE (#{status} IS NULL OR status = #{status})
+          AND created_at BETWEEN #{startDate} AND #{endDate}
+    ) AS fo
     JOIN supplier s ON fo.supplier_id = s.id
     JOIN purchase_items pi ON fo.id = pi.purchase_order_id
     JOIN product p ON pi.product_id = p.id
-    WHERE (#{supplierName} IS NULL OR s.name LIKE #{supplierName})
+    WHERE (#{supplierName} IS NULL OR s.name LIKE CONCAT('%', #{supplierName}, '%'))
     ORDER BY fo.created_at DESC
 """)
     IPage<PurchaseOrderListVo> getPurchaseOrderList(
