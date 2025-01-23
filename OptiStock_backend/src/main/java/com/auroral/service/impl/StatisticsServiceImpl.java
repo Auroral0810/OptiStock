@@ -1,10 +1,15 @@
 package com.auroral.service.impl;
 
 import com.auroral.dto.InventoryStatisticsDTO;
+import com.auroral.dto.PurchaseStatisticsDTO;
 import com.auroral.dto.SalesStatisticsDTO;
 import com.auroral.mapper.StatisticsMapper;
 import com.auroral.service.StatisticsService;
 import com.auroral.vo.*;
+import com.auroral.vo.purchsaestatisticsVo.CategoryDataVO;
+import com.auroral.vo.purchsaestatisticsVo.MonthlyTrendVO;
+import com.auroral.vo.purchsaestatisticsVo.PurchaseStatisticsVO;
+import com.auroral.vo.purchsaestatisticsVo.SupplierRankingVO;
 import com.auroral.vo.salestatisticVo.*;
 import com.auroral.vo.statisticsVo.*;
 import com.auroral.vo.statisticsVo.BasicStatsVO;
@@ -18,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
@@ -211,4 +217,65 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         return salesStatisticsVO;
     }
+
+    private Random random = new Random();
+
+    @Override
+    public PurchaseStatisticsVO getPurchaseStatistics(PurchaseStatisticsDTO dto) {
+        // 获取传入的 startDate 和 endDate
+        String startDate = dto.getStartDate();
+        String endDate = dto.getEndDate();
+
+        // 处理时间范围参数
+        if (startDate == null || startDate.trim().isEmpty()) {
+            startDate = statisticsMapper.getMinCreatedAt();
+            if (startDate == null || startDate.trim().isEmpty()) {
+                startDate = "1970-01-01"; // 设置一个默认的最早日期
+            }
+        }
+
+        if (endDate == null || endDate.trim().isEmpty()) {
+            endDate = statisticsMapper.getMaxCreatedAt();
+            if (endDate == null || endDate.trim().isEmpty()) {
+                endDate = "9999-12-31"; // 设置一个默认的最迟日期
+            }
+        }
+
+        PurchaseStatisticsVO vo = new PurchaseStatisticsVO();
+
+        // 获取总采购金额
+        BigDecimal totalAmount = statisticsMapper.getTotalPurchaseAmount(startDate, endDate);
+        vo.setTotalAmount(totalAmount != null ? totalAmount : BigDecimal.ZERO);
+
+        // 获取采购订单数
+        Integer orderCount = statisticsMapper.getPurchaseOrderCount(startDate, endDate);
+        vo.setOrderCount(orderCount != null ? orderCount : 0);
+
+        // 获取供应商数量
+        Integer supplierCount = statisticsMapper.getSupplierCount(startDate, endDate);
+        vo.setSupplierCount(supplierCount != null ? supplierCount : 0);
+
+        // 设置模拟的平均交付时间和交付时间百分比
+        Double averageDeliveryTime = 3.0 + (7.0 - 3.0) * random.nextDouble(); // 模拟值在3到7天之间
+        averageDeliveryTime = Math.round(averageDeliveryTime * 10.0) / 10.0; // 保留1位小数
+        vo.setAverageDeliveryTime(averageDeliveryTime);
+
+        Integer deliveryTimePercentage = 30 + random.nextInt(21); // 模拟值在30到50之间
+        vo.setDeliveryTimePercentage(deliveryTimePercentage);
+
+        // 获取月度采购趋势
+        List<MonthlyTrendVO> monthlyTrend = statisticsMapper.getMonthlyPurchaseTrend(startDate, endDate);
+        vo.setMonthlyTrend(monthlyTrend);
+
+        // 获取采购品类分布
+        List<CategoryDataVO> categoryData = statisticsMapper.getPurchaseCategoryDistribution(startDate, endDate);
+        vo.setCategoryData(categoryData);
+
+        // 获取供应商采购金额TOP10
+        List<SupplierRankingVO> supplierRanking = statisticsMapper.getTop10SuppliersByPurchaseAmount(startDate, endDate);
+        vo.setSupplierRanking(supplierRanking);
+
+        return vo;
+    }
+
 }

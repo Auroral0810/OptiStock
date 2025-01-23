@@ -1,5 +1,8 @@
 package com.auroral.mapper;
 
+import com.auroral.vo.purchsaestatisticsVo.CategoryDataVO;
+import com.auroral.vo.purchsaestatisticsVo.MonthlyTrendVO;
+import com.auroral.vo.purchsaestatisticsVo.SupplierRankingVO;
 import com.auroral.vo.salestatisticVo.*;
 import com.auroral.vo.statisticsVo.BasicStatsVO;
 import com.auroral.vo.statisticsVo.ProductVO;
@@ -9,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -455,4 +459,120 @@ public interface StatisticsMapper {
             "</script>"
     })
     List<RefundTopProductVO> getRefundTopProducts(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    // 获取总采购金额
+    @Select({
+            "<script>",
+            "SELECT SUM(total_cost) FROM purchase_order",
+            "<where>",
+            "<if test='startDate != null and startDate != \"\"'>",
+            "created_at &gt;= #{startDate}",
+            "</if>",
+            "<if test='endDate != null and endDate != \"\"'>",
+            "AND created_at &lt;= #{endDate}",
+            "</if>",
+            "</where>",
+            "</script>"
+    })
+    BigDecimal getTotalPurchaseAmount(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    // 获取采购订单数
+    @Select({
+            "<script>",
+            "SELECT COUNT(*) FROM purchase_order",
+            "<where>",
+            "<if test='startDate != null and startDate != \"\"'>",
+            "created_at &gt;= #{startDate}",
+            "</if>",
+            "<if test='endDate != null and endDate != \"\"'>",
+            "AND created_at &lt;= #{endDate}",
+            "</if>",
+            "</where>",
+            "</script>"
+    })
+    Integer getPurchaseOrderCount(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    // 获取供应商数量
+    @Select({
+            "<script>",
+            "SELECT COUNT(DISTINCT supplier_id) FROM purchase_order",
+            "<where>",
+            "<if test='startDate != null and startDate != \"\"'>",
+            "created_at &gt;= #{startDate}",
+            "</if>",
+            "<if test='endDate != null and endDate != \"\"'>",
+            "AND created_at &lt;= #{endDate}",
+            "</if>",
+            "</where>",
+            "</script>"
+    })
+    Integer getSupplierCount(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    // 获取月度采购趋势
+    @Select({
+            "<script>",
+            "SELECT DATE_FORMAT(created_at, '%m月') AS month, SUM(total_cost) AS amount",
+            "FROM purchase_order",
+            "<where>",
+            "<if test='startDate != null and startDate != \"\"'>",
+            "created_at &gt;= #{startDate}",
+            "</if>",
+            "<if test='endDate != null and endDate != \"\"'>",
+            "AND created_at &lt;= #{endDate}",
+            "</if>",
+            "</where>",
+            "GROUP BY DATE_FORMAT(created_at, '%m月')",
+            "ORDER BY DATE_FORMAT(created_at, '%m月')",
+            "</script>"
+    })
+    List<MonthlyTrendVO> getMonthlyPurchaseTrend(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    // 获取采购品类分布
+    @Select({
+            "<script>",
+            "SELECT pc.name, SUM(pi.total_price) AS value",
+            "FROM purchase_order po",
+            "JOIN purchase_items pi ON po.id = pi.purchase_order_id",
+            "JOIN product p ON pi.product_id = p.id",
+            "JOIN product_category pc ON p.category_id = pc.id",
+            "<where>",
+            "<if test='startDate != null and startDate != \"\"'>",
+            "po.created_at &gt;= #{startDate}",
+            "</if>",
+            "<if test='endDate != null and endDate != \"\"'>",
+            "AND po.created_at &lt;= #{endDate}",
+            "</if>",
+            "</where>",
+            "GROUP BY pc.name",
+            "</script>"
+    })
+    List<CategoryDataVO> getPurchaseCategoryDistribution(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    // 获取供应商采购金额TOP10
+    @Select({
+            "<script>",
+            "SELECT s.name, SUM(po.total_cost) AS value",
+            "FROM purchase_order po",
+            "JOIN supplier s ON po.supplier_id = s.id",
+            "<where>",
+            "<if test='startDate != null and startDate != \"\"'>",
+            "po.created_at &gt;= #{startDate}",
+            "</if>",
+            "<if test='endDate != null and endDate != \"\"'>",
+            "AND po.created_at &lt;= #{endDate}",
+            "</if>",
+            "</where>",
+            "GROUP BY s.name",
+            "ORDER BY SUM(po.total_cost) DESC",
+            "LIMIT 10",
+            "</script>"
+    })
+    List<SupplierRankingVO> getTop10SuppliersByPurchaseAmount(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    // 获取最早的 created_at 日期
+    @Select("SELECT DATE_FORMAT(MIN(created_at), '%Y-%m-%d') FROM purchase_order")
+    String getMinCreatedAt();
+
+    // 获取最晚的 created_at 日期
+    @Select("SELECT DATE_FORMAT(MAX(created_at), '%Y-%m-%d') FROM purchase_order")
+    String getMaxCreatedAt();
 }

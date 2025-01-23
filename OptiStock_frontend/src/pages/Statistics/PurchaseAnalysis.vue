@@ -4,7 +4,7 @@
     <div class="page-header">
       <div class="header-content">
         <h1 class="main-title">采购分析</h1>
-        <div class="date-picker">
+        <div class="operation-area">
           <el-date-picker
             v-model="dateRange"
             type="daterange"
@@ -13,6 +13,18 @@
             end-placeholder="结束日期"
             @change="handleDateChange"
           />
+          <el-button type="primary" @click="handleSearch">
+            <el-icon><Search /></el-icon>
+            搜索
+          </el-button>
+          <el-button @click="resetDateRange">
+            <el-icon><RefreshLeft /></el-icon>
+            重置
+          </el-button>
+          <el-button type="success" @click="refreshCharts">
+            <el-icon><Refresh /></el-icon>
+            刷新
+          </el-button>
         </div>
       </div>
     </div>
@@ -29,9 +41,9 @@
               </div>
             </template>
             <div class="card-content">
-              <el-progress type="dashboard" :percentage="mockData.totalAmountPercentage" :width="120" />
+              <el-progress type="dashboard" :percentage="85" :width="120" />
               <div class="stat-info">
-                <span class="number">{{ mockData.totalAmount }}</span>
+                <span class="number">{{ statsData.totalAmount }}</span>
                 <span class="unit">元</span>
               </div>
             </div>
@@ -46,9 +58,9 @@
               </div>
             </template>
             <div class="card-content success">
-              <el-progress type="circle" :percentage="mockData.orderCountPercentage" :width="120" status="success"/>
+              <el-progress type="circle" :percentage="70" :width="120" status="success"/>
               <div class="stat-info">
-                <span class="number">{{ mockData.orderCount }}</span>
+                <span class="number">{{ statsData.orderCount }}</span>
                 <span class="unit">单</span>
               </div>
             </div>
@@ -63,9 +75,9 @@
               </div>
             </template>
             <div class="card-content">
-              <el-progress type="dashboard" :percentage="mockData.supplierPercentage" :width="120"/>
+              <el-progress type="dashboard" :percentage="60" :width="120"/>
               <div class="stat-info">
-                <span class="number">{{ mockData.supplierCount }}</span>
+                <span class="number">{{ statsData.supplierCount }}</span>
                 <span class="unit">家</span>
               </div>
             </div>
@@ -80,9 +92,9 @@
               </div>
             </template>
             <div class="card-content warning">
-              <el-progress type="circle" :percentage="mockData.deliveryTimePercentage" :width="120" status="warning"/>
+              <el-progress type="circle" :percentage="statsData.deliveryTimePercentage" :width="120" status="warning"/>
               <div class="stat-info">
-                <span class="number">{{ mockData.averageDeliveryTime }}</span>
+                <span class="number">{{ statsData.averageDeliveryTime }}</span>
                 <span class="unit">天</span>
               </div>
             </div>
@@ -121,48 +133,22 @@
 
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
-import { Money, Document, User, Timer } from '@element-plus/icons-vue'
+import { Money, Document, User, Timer, Search, RefreshLeft, Refresh } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
+import { getPurchaseStatistics } from '@/api/statistics'
 
 const dateRange = ref([])
 
-// 模拟数据
-const mockData = reactive({
-  totalAmount: 1234567,
-  totalAmountPercentage: 85,
-  orderCount: 356,
-  orderCountPercentage: 70,
-  supplierCount: 45,
-  supplierPercentage: 60,
-  averageDeliveryTime: 5.2,
-  deliveryTimePercentage: 40,
-  monthlyTrend: [
-    { month: '1月', amount: 100000 },
-    { month: '2月', amount: 150000 },
-    { month: '3月', amount: 180000 },
-    { month: '4月', amount: 130000 },
-    { month: '5月', amount: 200000 },
-    { month: '6月', amount: 250000 }
-  ],
-  categoryData: [
-    { value: 35, name: '电子产品' },
-    { value: 25, name: '办公用品' },
-    { value: 20, name: '耗材' },
-    { value: 15, name: '配件' },
-    { value: 5, name: '其他' }
-  ],
-  supplierRanking: [
-    { name: '供应商A', value: 500000 },
-    { name: '供应商B', value: 450000 },
-    { name: '供应商C', value: 400000 },
-    { name: '供应商D', value: 350000 },
-    { name: '供应商E', value: 300000 },
-    { name: '供应商F', value: 250000 },
-    { name: '供应商G', value: 200000 },
-    { name: '供应商H', value: 150000 },
-    { name: '供应商I', value: 100000 },
-    { name: '供应商J', value: 50000 }
-  ]
+// 统计数据
+const statsData = reactive({
+  totalAmount: 0,
+  orderCount: 0,
+  supplierCount: 0,
+  averageDeliveryTime: 0,
+  deliveryTimePercentage: 0,
+  monthlyTrend: [],
+  categoryData: [],
+  supplierRanking: []
 })
 
 // 图表实例
@@ -180,14 +166,14 @@ const initTrendChart = () => {
     },
     xAxis: {
       type: 'category',
-      data: mockData.monthlyTrend.map(item => item.month)
+      data: statsData.monthlyTrend.map(item => item.month)
     },
     yAxis: {
       type: 'value',
       name: '采购金额(元)'
     },
     series: [{
-      data: mockData.monthlyTrend.map(item => item.amount),
+      data: statsData.monthlyTrend.map(item => item.amount),
       type: 'line',
       smooth: true,
       areaStyle: {
@@ -237,7 +223,7 @@ const initCategoryChart = () => {
       labelLine: {
         show: false
       },
-      data: mockData.categoryData
+      data: statsData.categoryData
     }]
   }
   categoryChart.setOption(option)
@@ -266,12 +252,12 @@ const initSupplierChart = () => {
     },
     yAxis: {
       type: 'category',
-      data: mockData.supplierRanking.map(item => item.name)
+      data: statsData.supplierRanking.map(item => item.name)
     },
     series: [{
       name: '采购金额',
       type: 'bar',
-      data: mockData.supplierRanking.map(item => item.value),
+      data: statsData.supplierRanking.map(item => item.value),
       itemStyle: {
         color: '#67C23A'
       }
@@ -280,17 +266,57 @@ const initSupplierChart = () => {
   supplierChart.setOption(option)
 }
 
+import { ElMessage } from 'element-plus'
+
+// 获取统计数据
+const fetchData = async () => {
+  try {
+    const params = {
+      startDate: dateRange.value?.[0]?.toISOString().split('T')[0] || '',
+      endDate: dateRange.value?.[1]?.toISOString().split('T')[0] || ''
+    }
+    const res = await getPurchaseStatistics(params)
+    if(res.code === 200) {
+      Object.assign(statsData, res.data)
+      refreshCharts()
+    } else {
+      ElMessage.error(res.message || '获取数据失败')
+    }
+  } catch (error) {
+    console.error('获取数据出错:', error)
+    ElMessage.error('获取数据出错')
+  }
+}
+
 // 日期变化处理
 const handleDateChange = (val) => {
   console.log('日期范围变化:', val)
-  // 这里可以添加根据日期刷新数据的逻辑
+  fetchData()
+}
+
+// 搜索按钮点击事件
+const handleSearch = () => {
+  fetchData()
+}
+
+// 重置日期范围
+const resetDateRange = () => {
+  dateRange.value = []
+  fetchData()
+}
+
+// 刷新图表
+const refreshCharts = () => {
+  initTrendChart()
+  initCategoryChart()
+  initSupplierChart()
+  //提示刷新成功
+  ElMessage.success('刷新成功')
 }
 
 // 页面加载时初始化图表
 onMounted(() => {
-  initTrendChart()
-  initCategoryChart()
-  initSupplierChart()
+  fetchData()
 
   // 监听窗口大小变化，重绘图表
   window.addEventListener('resize', () => {
@@ -320,6 +346,12 @@ onMounted(() => {
   font-size: 24px;
   color: #303133;
   margin: 0;
+}
+
+.operation-area {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .statistics-cards {

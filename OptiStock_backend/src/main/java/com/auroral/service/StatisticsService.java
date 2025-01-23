@@ -1,7 +1,9 @@
 package com.auroral.service;
 
 import com.auroral.dto.InventoryStatisticsDTO;
+import com.auroral.dto.PurchaseStatisticsDTO;
 import com.auroral.dto.SalesStatisticsDTO;
+import com.auroral.vo.purchsaestatisticsVo.PurchaseStatisticsVO;
 import com.auroral.vo.salestatisticVo.SalesStatisticsVO;
 import com.auroral.vo.statisticsVo.InventoryStatisticsVO;
 
@@ -15,4 +17,6 @@ public interface StatisticsService {
      * @return 销售统计响应VO
      */
     SalesStatisticsVO getSalesStatistics(SalesStatisticsDTO salesStatisticsDTO);
+
+    PurchaseStatisticsVO getPurchaseStatistics(PurchaseStatisticsDTO purchaseStatisticsDTO);
 }
