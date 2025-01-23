@@ -28,3 +28,13 @@ export const getPurchaseStatistics = (params) => {
     data: params
   })
 }
+
+// src/api/dashboard.js
+
+// 获取仪表盘数据
+export const getDashboardData = () => {
+  return request({
+    url: '/statistics/overview',
+    method: 'get'
+  })
+}
