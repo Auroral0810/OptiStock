@@ -1,5 +1,6 @@
 package com.auroral.vo.statisticsVo;
 
+import com.auroral.vo.ProductVo;
 import lombok.Data;
 
 import java.util.List;

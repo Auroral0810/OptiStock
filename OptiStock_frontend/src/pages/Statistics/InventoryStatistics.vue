@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
-import { Goods, Money, Warning, TopRight, Refresh } from '@element-plus/icons-vue'
+import { Goods, Money, Warning, TopRight, Refresh, Search } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import { getInventoryData } from '@/api/statistics'
+import { ElMessage } from 'element-plus'
 
 // 日期范围
 const dateRange = ref([])
@@ -22,7 +23,15 @@ const statsData = ref({
 // 获取统计数据
 const getStats = async () => {
   try {
-    const res = await getInventoryData()
+    let params = {
+      startDate: '',
+      endDate: ''
+    }
+    if(dateRange.value && dateRange.value.length === 2) {
+      params.startDate = dateRange.value[0].toISOString().split('T')[0]
+      params.endDate = dateRange.value[1].toISOString().split('T')[0]
+    }
+    const res = await getInventoryData(params)
     if(res.code === 200) {
       statsData.value = res.data
     }
@@ -41,17 +50,33 @@ const refreshCharts = async () => {
   initLossChart()
   initStockFlowChart()
   initValueDistributionChart()
+  ElMessage.success('图表数据已更新')
 }
 
-// 日期范围变化时刷新
+// 搜索按钮点击事件
+const handleSearch = () => {
+  const params = {
+    startDate: dateRange.value?.[0]?.toISOString().split('T')[0] || '',
+    endDate: dateRange.value?.[1]?.toISOString().split('T')[0] || ''
+  }
+  console.log('Search with date range:', params)
+  refreshCharts()
+}
+
+// 重置日期范围
+const resetDateRange = () => {
+  dateRange.value = []
+  refreshCharts()
+}
+
+// 日期范围变化时记录
 const handleDateRangeChange = () => {
   if (dateRange.value && dateRange.value.length === 2) {
     const params = {
-      startDate: dateRange.value[0],
-      endDate: dateRange.value[1]
+      startDate: dateRange.value[0].toISOString().split('T')[0],
+      endDate: dateRange.value[1].toISOString().split('T')[0]
     }
     console.log('Date range changed:', params)
-    refreshCharts()
   }
 }
 
@@ -99,7 +124,7 @@ const initLossChart = () => {
       name: '损耗率',
       type: 'line',
       smooth: true,
-      data: mockData.lossData.map(item => item.value),
+      data: statsData.value.lossData.map(item => item.value),
       areaStyle: {
         opacity: 0.3
       },
@@ -136,7 +161,7 @@ const initStockFlowChart = () => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: mockData.stockFlow.map(item => item.date)
+      data: statsData.value.stockFlow.map(item => item.date)
     },
     yAxis: {
       type: 'value',
@@ -147,7 +172,7 @@ const initStockFlowChart = () => {
         name: '入库',
         type: 'line',
         smooth: true,
-        data: mockData.stockFlow.map(item => item.inbound),
+        data: statsData.value.stockFlow.map(item => item.inbound),
         itemStyle: {
           color: '#67C23A'
         }
@@ -156,7 +181,7 @@ const initStockFlowChart = () => {
         name: '出库',
         type: 'line',
         smooth: true,
-        data: mockData.stockFlow.map(item => item.outbound),
+        data: statsData.value.stockFlow.map(item => item.outbound),
         itemStyle: {
           color: '#409EFF'
         }
@@ -189,7 +214,7 @@ const initValueDistributionChart = () => {
     },
     xAxis: {
       type: 'category',
-      data: mockData.valueDistribution.map(item => item.range),
+      data: statsData.value.valueDistribution.map(item => item.priceRange),
       axisLabel: {
         interval: 0,
         rotate: 30
@@ -202,8 +227,8 @@ const initValueDistributionChart = () => {
     series: [{
       name: '商品数量',
       type: 'bar',
-      data: mockData.valueDistribution.map(item => ({
-        value: item.count,
+      data: statsData.value.valueDistribution.map(item => ({
+        value: item.countValue,
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             { offset: 0, color: '#83bff6' },
@@ -248,14 +273,14 @@ const initTopTenChart = () => {
     },
     yAxis: {
       type: 'category',
-      data: mockData.topTenProducts.map(item => item.name),
+      data: statsData.value.topTenProducts.map(item => item.name),
       inverse: true
     },
     series: [
       {
         name: '库存数量',
         type: 'bar',
-        data: mockData.topTenProducts.map(item => ({
+        data: statsData.value.topTenProducts.map(item => ({
           value: item.value,
           itemStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
@@ -302,14 +327,14 @@ const initBottomTenChart = () => {
     },
     yAxis: {
       type: 'category',
-      data: mockData.bottomTenProducts.map(item => item.name),
+      data: statsData.value.bottomTenProducts.map(item => item.name),
       inverse: true
     },
     series: [
       {
         name: '库存数量',
         type: 'bar',
-        data: mockData.bottomTenProducts.map(item => ({
+        data: statsData.value.bottomTenProducts.map(item => ({
           value: item.value,
           itemStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
@@ -371,7 +396,7 @@ const initWarningChart = () => {
         labelLine: {
           show: false
         },
-        data: mockData.warningDistribution.map(item => ({
+        data: statsData.value.warningDistribution.map(item => ({
           value: item.value,
           name: item.name,
           itemStyle: {
@@ -408,7 +433,7 @@ const initCategoryChart = () => {
         name: '商品分类',
         type: 'pie',
         radius: '50%',
-        data: mockData.categoryDistribution.map(item => ({
+        data: statsData.value.categoryDistribution.map(item => ({
           value: item.value,
           name: item.name,
           itemStyle: {
@@ -465,6 +490,12 @@ onMounted(() => {
             @change="handleDateRangeChange"
             style="margin-right: 16px;"
           />
+          <el-button type="primary" :icon="Search" @click="handleSearch" style="margin-right: 16px;">
+            搜索
+          </el-button>
+          <el-button type="warning" @click="resetDateRange" style="margin-right: 16px;">
+            重置
+          </el-button>
           <el-button type="primary" :icon="Refresh" @click="refreshCharts">
             刷新
           </el-button>
@@ -484,9 +515,9 @@ onMounted(() => {
               </div>
             </template>
             <div class="card-content">
-              <el-progress type="dashboard" :percentage="mockData.totalInventoryPercentage" :width="120" />
+              <el-progress type="dashboard" :percentage="statsData.basicStats.totalInventoryPercentage || 0" :width="120" />
               <div class="stat-info">
-                <span class="number">{{ mockData.totalInventory }}</span>
+                <span class="number">{{ statsData.basicStats.totalInventory || 0 }}</span>
                 <span class="unit">件</span>
               </div>
             </div>
@@ -501,9 +532,9 @@ onMounted(() => {
               </div>
             </template>
             <div class="card-content">
-              <el-progress type="circle" :percentage="mockData.totalValuePercentage" :width="120" status="success"/>
+              <el-progress type="circle" :percentage="statsData.basicStats.totalValuePercentage || 0" :width="120" status="success"/>
               <div class="stat-info">
-                <span class="number">{{ mockData.totalValue }}</span>
+                <span class="number">{{ statsData.basicStats.totalValue || 0 }}</span>
                 <span class="unit">元</span>
               </div>
             </div>
@@ -518,9 +549,9 @@ onMounted(() => {
               </div>
             </template>
             <div class="card-content warning">
-              <el-progress type="dashboard" :percentage="mockData.lowStockPercentage" :width="120" status="warning"/>
+              <el-progress type="dashboard" :percentage="statsData.basicStats.lowStockPercentage || 0" :width="120" status="warning"/>
               <div class="stat-info">
-                <span class="number">{{ mockData.lowStockCount }}</span>
+                <span class="number">{{ statsData.basicStats.lowStockCount || 0 }}</span>
                 <span class="unit">项</span>
               </div>
             </div>
@@ -535,9 +566,9 @@ onMounted(() => {
               </div>
             </template>
             <div class="card-content success">
-              <el-progress type="circle" :percentage="mockData.turnoverPercentage" :width="120" status="success"/>
+              <el-progress type="circle" :percentage="statsData.basicStats.turnoverPercentage || 0" :width="120" status="success"/>
               <div class="stat-info">
-                <span class="number">{{ mockData.turnoverRate }}</span>
+                <span class="number">{{ statsData.basicStats.turnoverRate || 0 }}</span>
                 <span class="unit">次/年</span>
               </div>
             </div>

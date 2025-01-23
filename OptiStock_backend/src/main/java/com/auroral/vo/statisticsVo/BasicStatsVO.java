@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 
 @Data
 public class BasicStatsVO {
-    private Integer totalInventory;
+    private int totalInventory;
     private BigDecimal totalInventoryPercentage;
     private BigDecimal totalValue;
     private BigDecimal totalValuePercentage;
-    private Integer lowStockCount;
+    private int lowStockCount;
     private BigDecimal lowStockPercentage;
     private BigDecimal turnoverRate;
     private BigDecimal turnoverPercentage;

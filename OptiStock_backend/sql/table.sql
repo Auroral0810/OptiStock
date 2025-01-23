@@ -175,18 +175,9 @@ CREATE TABLE `purchase_items`
 ) COMMENT '采购商品详情表';
 
 -- ==============================================
---               5️⃣ 退货 & 损耗管理模块
+--               5️⃣ 损耗管理模块
 -- ==============================================
 --
--- CREATE TABLE `return_orders`
--- (
---     `id`            BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '退货订单唯一标识符',
---     `order_id`      BIGINT NOT NULL COMMENT '关联的订单ID',
---     `product_id`    BIGINT NOT NULL COMMENT '退货商品ID',
---     `return_reason` TEXT COMMENT '退货原因',
---     `return_status` ENUM('待处理', '已完成') DEFAULT '待处理' COMMENT '退货处理状态',
---     `return_date`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '退货时间'
--- ) COMMENT '退货订单表';
 
 CREATE TABLE `stock_adjustments`
 (
