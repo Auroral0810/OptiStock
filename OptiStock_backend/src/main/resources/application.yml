@@ -4,23 +4,26 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/OptiStock?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/mydb?useSSL=false&serverTimezone=UTC
+#    url: jdbc:mysql://localhost:3306/OptiStock?useSSL=false&serverTimezone=UTC
     username: root
+#    password: 123456
     password: YYF101611
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
       idle-timeout: 30000
-      max-lifetime: 60000
+      max-lifetime: 1800000
       connection-timeout: 30000
+  data:
+    redis:
+      password: 123456
+      host: 118.31.36.52
+      port: 6379
+      timeout: 6000  # 超时时间（毫秒）
   transaction:
     rollback-on-commit-failure: true
-
-
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 打印SQL日志
-
-
-
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

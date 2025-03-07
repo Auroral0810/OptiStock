@@ -4,74 +4,40 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f880c02-f545-403b-9842-5233742c29da" name="更改" comment="feat: 更新示例数据并优化表结构">
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/sql/sampleData.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/sql/table.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/config/CorsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/FileUploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/FileUploadController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/GoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/GoodController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/PurchaseOrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/PurchaseOrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/ReturnOrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/ReturnOrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/StatisticsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/StatisticsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/SupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/SupplierController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/Usercontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/Usercontroller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AddCategoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AddCategoryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AddOrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AddOrderDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AddProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AddProductDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AddPurchaseOrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AddPurchaseOrderDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AdjustStockDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/AdjustStockDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/HandleReturnOrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/HandleReturnOrderDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/InventoryStatisticsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/InventoryStatisticsDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/OrderListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/OrderListDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/PageRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/PageRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/ProductFilterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/ProductFilterDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/ProductListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/ProductListDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/PurchaseOrderListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/PurchaseOrderListDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/PurchaseStatisticsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/PurchaseStatisticsDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/ReturnOrderListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/ReturnOrderListDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/SalesStatisticsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/SalesStatisticsDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/StockFilterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/StockFilterDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/StockListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/StockListDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/SupplierFilterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/SupplierFilterDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/SupplierListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/SupplierListDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UpdateCategoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UpdateCategoryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UpdateProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UpdateProductDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UserChangePwdDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UserChangePwdDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UserLoginDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UserLoginDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UserRegisterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UserRegisterDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UserUpdateDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/dto/UserUpdateDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/mapper/PurchaseOrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/mapper/PurchaseOrderMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/mapper/StatisticsMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/mapper/StatisticsMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/StatisticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/StatisticsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/ProductCategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/ProductCategoryServiceImpl.java" afterDir="false" />
+    <list default="true" id="91d7b9d4-b809-4624-a637-735a11792aac" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock.jar" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/PurchaseOrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/PurchaseOrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/ReturnOrdersServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/ReturnOrdersServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/StatisticsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/StatisticsServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/StockAdjustmentsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/StockAdjustmentsServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/SupplierServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/SupplierServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/vo/OverviewStatisticsVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/vo/OverviewStatisticsVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/resources/mapper/OrderMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/resources/mapper/OrderMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/pages/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_frontend/src/pages/Login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/pages/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_frontend/src/pages/default.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_frontend/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_backend/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_frontend/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/backend-running.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/config-db.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/data-analysis1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/data-analysis2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/data-analysis3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/data-analysis4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/inventory-monitor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/inventory-warning.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/login-page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/main-dashboard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/order-detail.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/order-list.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/product-category.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/product-list.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/profile1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/profile2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/purchase-order.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/supplier-detail.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/images/screenshots/supplier-manage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OptiStock_frontend/src/pages/Product/ProductList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/OptiStock_frontend/src/pages/Product/ProductList.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-        <option value="Class" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -89,18 +55,15 @@
   }
 }</component>
   <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 8
 }</component>
-  <component name="ProjectId" id="2rr3yRzRNht01zVCNZoXpouZcuB" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2teZqDnLBNNmg0Ty6C3s8qQrF9t" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Maven.OptiStock_backend [clean].executor&quot;: &quot;Run&quot;,
     &quot;Maven.OptiStock_backend [install].executor&quot;: &quot;Run&quot;,
     &quot;Maven.OptiStock_backend [package].executor&quot;: &quot;Run&quot;,
@@ -110,31 +73,27 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Spring Boot.OptiStockApplication.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/超级无敌巨重要的资料/项目开发/OptiStock&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
   }
 }</component>
-  <component name="ReactorSettings">
-    <option name="notificationShown" value="true" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/OptiStock_backend/sql" />
-    </key>
-  </component>
   <component name="RunManager">
     <configuration name="OptiStockApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="OptiStock_backend" />
@@ -155,156 +114,18 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
-      <changelist id="5f880c02-f545-403b-9842-5233742c29da" name="更改" comment="" />
-      <created>1737303620549</created>
+      <changelist id="91d7b9d4-b809-4624-a637-735a11792aac" name="更改" comment="" />
+      <created>1740714689630</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1737303620549</updated>
-      <workItem from="1737303622574" duration="152358000" />
-      <workItem from="1737623719133" duration="934000" />
-      <workItem from="1737629606302" duration="11423000" />
+      <updated>1740714689630</updated>
+      <workItem from="1740714691273" duration="3077000" />
+      <workItem from="1741156237948" duration="1581000" />
+      <workItem from="1741357188269" duration="301000" />
     </task>
-    <task id="LOCAL-00001" summary="Init commit">
-      <option name="closed" value="true" />
-      <created>1737304005139</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1737304005139</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Init commit">
-      <option name="closed" value="true" />
-      <created>1737304291213</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1737304291213</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Init commit">
-      <option name="closed" value="true" />
-      <created>1737305258863</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1737305258863</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Init commit">
-      <option name="closed" value="true" />
-      <created>1737305308170</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1737305308170</updated>
-    </task>
-    <task id="LOCAL-00005" summary="feat: 更新示例数据并优化表结构">
-      <option name="closed" value="true" />
-      <created>1737306213954</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1737306213954</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="master" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <ignored-roots>
-      <path value="$PROJECT_DIR$/OptiStock_backend" />
-      <path value="$PROJECT_DIR$/OptiStock_frontend" />
-    </ignored-roots>
-    <MESSAGE value="Init commit" />
-    <MESSAGE value="feat: 更新示例数据并优化表结构" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 更新示例数据并优化表结构" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/ProductCategoryServiceImpl.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/ProductCategoryServiceImpl.java</url>
-          <line>99</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/ProductServiceImpl.java</url>
-          <line>175</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/PurchaseOrderServiceImpl.java</url>
-          <line>186</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/StatisticsServiceImpl.java</url>
-          <line>212</line>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/controller/GoodController.java</url>
-          <line>62</line>
-          <properties class="com.auroral.controller.GoodController" method="addCategory">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/PurchaseOrderServiceImpl.java</url>
-          <line>184</line>
-          <properties class="com.auroral.service.impl.PurchaseOrderServiceImpl" method="getSupplierAndProduct">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/OptiStock_backend/src/main/java/com/auroral/service/impl/OrderServiceImpl.java</url>
-          <line>45</line>
-          <properties class="com.auroral.service.impl.OrderServiceImpl" method="getOrderList">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-    <pin-to-top-manager>
-      <pinned-members>
-        <PinnedItemInfo parentTag="com.auroral.dto.PurchaseOrderListDTO$FilterForm" memberName="dateRange" />
-        <PinnedItemInfo parentTag="jdk.proxy2.$Proxy80" memberName="h" />
-        <PinnedItemInfo parentTag="org.springframework.jdbc.BadSqlGrammarException" memberName="cause" />
-      </pinned-members>
-    </pin-to-top-manager>
   </component>
 </project>

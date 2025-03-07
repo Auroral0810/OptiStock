@@ -263,6 +263,13 @@ const handleAdd = () => {
 }
 // 点击编辑商品按钮
 const handleEdit = () => {
+  // 这里根据最终点击提交时的分类名称来修改对应的分类id
+  const categoryList = productCategoryStore.getCategoryList()
+  const category = categoryList.find(item => item.name === productForm.value.categoryName)
+  if (category) {
+    productForm.value.categoryId = category.id
+  }
+  
   //先进行校验根据表单提交校验
   productFormRef.value.validate((valid) => {
     if (valid) {

@@ -172,6 +172,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     //修改商品信息
     @Override
     public ResponseResult updateProduct(UpdateProductDTO updateProductDTO) {
+        ProductCategory category = productCategoryService.getOne(new LambdaQueryWrapper<ProductCategory>()
+                .eq(ProductCategory::getName, updateProductDTO.getCategoryName().trim()));
+        if (category != null) {
+            updateProductDTO.setCategoryId(category.getId());
+        }
         Product product = BeanCopyUtils.copyBean(updateProductDTO, Product.class);
         updateById(product);
         return ResponseResult.okResult();
